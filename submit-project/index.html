@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ither — Submit Project</title>
+    <link rel="stylesheet" href="/assets/style.css">
+    <style>
+        .submit-wrapper {
+            max-width: 680px;
+            margin: 48px auto;
+            padding: 0 20px 60px;
+        }
+
+        .submit-wrapper h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .submit-wrapper p.subtitle {
+            color: #555;
+            margin-bottom: 32px;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+            color: #333;
+        }
+
+        .form-group label span {
+            color: #ef4444;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: border 0.15s;
+            box-sizing: border-box;
+            background: #fafafa;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #2563eb;
+            background: white;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-hint {
+            font-size: 0.78rem;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        /* Tech stack tags input */
+        .tags-input-wrapper {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 8px;
+            background: #fafafa;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            cursor: text;
+            transition: border 0.15s;
+        }
+
+        .tags-input-wrapper:focus-within {
+            border-color: #2563eb;
+            background: white;
+        }
+
+        .tag-chip {
+            background: #eff6ff;
+            color: #2563eb;
+            border: 1px solid #bfdbfe;
+            border-radius: 6px;
+            padding: 3px 8px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .tag-chip button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #93c5fd;
+            font-size: 0.9rem;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .tag-chip button:hover { color: #2563eb; }
+
+        .tags-input {
+            border: none !important;
+            outline: none;
+            padding: 4px !important;
+            background: transparent !important;
+            font-size: 0.9rem;
+            min-width: 120px;
+            flex: 1;
+        }
+
+        .form-row-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .status-options {
+            display: flex;
+            gap: 10px;
+        }
+
+        .status-option {
+            flex: 1;
+            text-align: center;
+        }
+
+        .status-option input[type="radio"] { display: none; }
+
+        .status-option label {
+            display: block;
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.15s;
+            color: #555;
+        }
+
+        .status-option input:checked + label {
+            border-color: #2563eb;
+            background: #eff6ff;
+            color: #2563eb;
+        }
+
+        .submit-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .btn-submit {
+            flex: 1;
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-submit:hover { background: #1d4ed8; }
+        .btn-submit:disabled { background: #93c5fd; cursor: not-allowed; }
+
+        .btn-cancel {
+            padding: 12px 24px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            font-size: 1rem;
+            cursor: pointer;
+            color: #555;
+            transition: background 0.15s;
+        }
+
+        .btn-cancel:hover { background: #f8fafc; }
+
+        .status-msg {
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .status-msg.success { background: #d1fae5; color: #065f46; display: block; }
+        .status-msg.error { background: #fee2e2; color: #991b1b; display: block; }
+
+        .login-prompt {
+            text-align: center;
+            padding: 60px 20px;
+            color: #555;
+        }
+
+        .role-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            background: #f9fafb;
+        }
+
+        .role-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .role-header input {
+            flex: 1;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            padding: 6px 8px;
+            font-size: 0.9rem;
+        }
+
+        .remove-role-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .role-card textarea {
+            width: 100%;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            padding: 8px;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            resize: vertical;
+        }
+
+        .role-skills {
+            margin-bottom: 8px;
+        }
+
+        .role-skills input {
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 0.8rem;
+            width: 100%;
+            margin-bottom: 4px;
+        }
+
+        .role-skills-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .skill-tag {
+            background: #dbeafe;
+            color: #1e40af;
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .skill-tag button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #93c5fd;
+            font-size: 0.8rem;
+        }
+
+        .role-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 80px;
+            gap: 8px;
+        }
+
+        .role-details select,
+        .role-details input {
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            padding: 4px 6px;
+            font-size: 0.8rem;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-top: 8px;
+        }
+
+        .btn-secondary:hover { background: #4b5563; }
+
+        /* ── Thumbnail upload styles ── */
+        .thumbnail-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .thumbnail-tab {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            background: #f8fafc;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #64748b;
+            transition: all 0.15s;
+        }
+
+        .thumbnail-tab.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        .thumbnail-tab:first-child { border-right: 1px solid #e2e8f0; }
+
+        .thumbnail-panel { display: none; }
+        .thumbnail-panel.active { display: block; }
+
+        .file-drop-zone {
+            border: 2px dashed #cbd5e1;
+            border-radius: 8px;
+            padding: 28px 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #f8fafc;
+            position: relative;
+        }
+
+        .file-drop-zone:hover,
+        .file-drop-zone.dragover {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .file-drop-zone input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+
+        .file-drop-icon { font-size: 2rem; margin-bottom: 8px; }
+
+        .file-drop-text {
+            font-size: 0.9rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .file-drop-hint {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        .thumbnail-preview {
+            margin-top: 10px;
+            display: none;
+            position: relative;
+        }
+
+        .thumbnail-preview img {
+            width: 100%;
+            max-height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .thumbnail-preview-remove {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 26px;
+            height: 26px;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .upload-progress {
+            display: none;
+            margin-top: 8px;
+            font-size: 0.82rem;
+            color: #2563eb;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <script src="/lib/header.js"></script>
+
+    <div class="submit-wrapper">
+        <h1 id="page-title">🚀 Submit Your Project</h1>
+        <p class="subtitle" id="page-subtitle">Show the world what you've built!</p>
+        <div id="main-content"></div>
+    </div>
+
+    <script src="/lib/supabase.js"></script>
+    <script src="/lib/user-menu.js"></script>
+    <script>
+        const currentUser = window.SupabaseClient.getCurrentUser();
+        const mainContent = document.getElementById("main-content");
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const editProjectId = urlParams.get('id');
+        let isEditing = !!editProjectId;
+
+        // Thumbnail state
+        let selectedFile = null;
+        let uploadedImageUrl = null; // URL from storage after upload
+
+        document.addEventListener("DOMContentLoaded", () => {
+            initializeUserMenu();
+        });
+
+        if (!currentUser) {
+            mainContent.innerHTML = `
+                <div class="login-prompt">
+                    <p>You need to be logged in to submit a project.</p>
+                    <br>
+                    <a href="/login/index.html" class="btn">Log In</a>
+                </div>
+            `;
+        } else {
+            renderForm();
+        }
+
+        let techStack = [];
+        let roles = [];
+
+        async function loadProjectForEditing() {
+            if (!editProjectId) return;
+
+            try {
+                const project = await window.SupabaseClient.supabaseFetch(`projects?id=eq.${editProjectId}&user_id=eq.${currentUser.id}`, { method: "GET" });
+
+                if (!project || project.length === 0) {
+                    showStatus("Project not found or you don't have permission to edit it.", "error");
+                    return;
+                }
+
+                const projectData = project[0];
+                const projectRoles = await window.SupabaseClient.supabaseFetch(`project_roles?project_id=eq.${editProjectId}`, { method: "GET" });
+
+                document.getElementById("title").value = projectData.title || "";
+                document.getElementById("tagline").value = projectData.tagline || "";
+                document.getElementById("description").value = projectData.description || "";
+                document.getElementById("live-url").value = projectData.live_url || "";
+                document.getElementById("github-url").value = projectData.github_url || "";
+
+                // Load existing thumbnail
+                if (projectData.thumbnail_url) {
+                    uploadedImageUrl = projectData.thumbnail_url;
+                    switchTab('url');
+                    document.getElementById("thumbnail-url-input").value = projectData.thumbnail_url;
+                    showUrlPreview(projectData.thumbnail_url);
+                }
+
+                const statusRadio = document.querySelector(`input[name="status"][value="${projectData.status}"]`);
+                if (statusRadio) statusRadio.checked = true;
+
+                techStack = projectData.tech_stack || [];
+                renderTags();
+
+                roles = (projectRoles || []).map(role => ({
+                    id: role.id,
+                    title: role.title || "",
+                    description: role.description || "",
+                    skills: role.skills || [],
+                    level: role.level || "beginner",
+                    commitment: role.commitment || "part_time",
+                    compensation: role.compensation || "volunteer",
+                    max_positions: role.max_positions || 1
+                }));
+                renderRoles();
+
+                document.getElementById("page-title").textContent = "✏️ Edit Project";
+                document.getElementById("page-subtitle").textContent = "Make changes to your project details";
+
+            } catch (error) {
+                console.error("Error loading project for editing:", error);
+                showStatus("Failed to load project data.", "error");
+            }
+        }
+
+        function renderForm() {
+            mainContent.innerHTML = `
+                <div class="form-card">
+
+                    <div class="form-group">
+                        <label>Project Title <span>*</span></label>
+                        <input type="text" id="title" placeholder="e.g. ither.online" maxlength="80">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tagline <span>*</span></label>
+                        <input type="text" id="tagline" placeholder="One sentence that describes your project" maxlength="120">
+                        <p class="form-hint">Keep it short and punchy!</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="description" placeholder="Tell us more about the project — what problem it solves, how you built it, what you learned..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tech Stack</label>
+                        <div class="tags-input-wrapper" id="tags-wrapper">
+                            <input class="tags-input" id="tech-input" placeholder="Type a tech and press Enter (e.g. React)">
+                        </div>
+                        <p class="form-hint">Press Enter or comma to add each technology</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Team Roles Needed</label>
+                        <div id="roles-container"></div>
+                        <button type="button" id="add-role-btn" class="btn-secondary">+ Add Role</button>
+                        <p class="form-hint">Define roles you need for your project team</p>
+                    </div>
+
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label>Live Demo URL</label>
+                            <input type="url" id="live-url" placeholder="https://yourproject.com">
+                        </div>
+                        <div class="form-group">
+                            <label>GitHub Repo URL</label>
+                            <input type="url" id="github-url" placeholder="https://github.com/you/repo">
+                        </div>
+                    </div>
+
+                    <!-- Thumbnail -->
+                    <div class="form-group">
+                        <label>Thumbnail Image</label>
+                        <div class="thumbnail-tabs">
+                            <button type="button" class="thumbnail-tab active" onclick="switchTab('file')" id="tab-file">📁 Upload File</button>
+                            <button type="button" class="thumbnail-tab" onclick="switchTab('url')" id="tab-url">🔗 Enter URL</button>
+                        </div>
+
+                        <!-- File upload panel -->
+                        <div class="thumbnail-panel active" id="panel-file">
+                            <div class="file-drop-zone" id="drop-zone">
+                                <input type="file" id="file-input" accept="image/jpeg,image/png,image/webp" onchange="handleFileSelect(this.files[0])">
+                                <div class="file-drop-icon">🖼️</div>
+                                <div class="file-drop-text">Click to select or drag image here</div>
+                                <div class="file-drop-hint">JPG, PNG, WEBP — max 2 MB</div>
+                            </div>
+                            <div class="upload-progress" id="upload-progress">⏳ Uploading...</div>
+                            <div class="thumbnail-preview" id="file-preview">
+                                <img id="file-preview-img" src="" alt="Preview">
+                                <button type="button" class="thumbnail-preview-remove" onclick="clearFile()">×</button>
+                            </div>
+                        </div>
+
+                        <!-- URL panel -->
+                        <div class="thumbnail-panel" id="panel-url">
+                            <input type="url" id="thumbnail-url-input" placeholder="https://i.imgur.com/yourimage.png" oninput="handleUrlInput(this.value)">
+                            <div class="thumbnail-preview" id="url-preview">
+                                <img id="url-preview-img" src="" alt="Preview" onerror="handleUrlError()">
+                                <button type="button" class="thumbnail-preview-remove" onclick="clearUrl()">×</button>
+                            </div>
+                            <p class="form-hint">Paste a direct image link. Use imgur.com to upload images for free.</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Project Status</label>
+                        <div class="status-options">
+                            <div class="status-option">
+                                <input type="radio" name="status" id="s-idea" value="idea" checked>
+                                <label for="s-idea">💡 Idea</label>
+                            </div>
+                            <div class="status-option">
+                                <input type="radio" name="status" id="s-progress" value="in-progress">
+                                <label for="s-progress">🔨 In Progress</label>
+                            </div>
+                            <div class="status-option">
+                                <input type="radio" name="status" id="s-mvp" value="mvp">
+                                <label for="s-mvp">🚧 MVP</label>
+                            </div>
+                            <div class="status-option">
+                                <input type="radio" name="status" id="s-launched" value="launched">
+                                <label for="s-launched">🚀 Launched</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="submit-actions">
+                        <button class="btn-submit" id="submit-btn">${isEditing ? '✏️ Update Project' : '🚀 Submit Project'}</button>
+                        <button class="btn-cancel" onclick="window.location.href='/showcase/index.html'">Cancel</button>
+                    </div>
+
+                    <div class="status-msg" id="status-msg"></div>
+                </div>
+            `;
+
+            // Tech stack
+            const techInput = document.getElementById("tech-input");
+            const tagsWrapper = document.getElementById("tags-wrapper");
+            tagsWrapper.addEventListener("click", () => techInput.focus());
+            techInput.addEventListener("keydown", (e) => {
+                if (e.key === "Enter" || e.key === ",") {
+                    e.preventDefault();
+                    addTag(techInput.value.trim().replace(",", ""));
+                    techInput.value = "";
+                }
+                if (e.key === "Backspace" && techInput.value === "" && techStack.length > 0) {
+                    removeTag(techStack[techStack.length - 1]);
+                }
+            });
+
+            // Drag & drop
+            const dropZone = document.getElementById("drop-zone");
+            dropZone.addEventListener("dragover", (e) => { e.preventDefault(); dropZone.classList.add("dragover"); });
+            dropZone.addEventListener("dragleave", () => dropZone.classList.remove("dragover"));
+            dropZone.addEventListener("drop", (e) => {
+                e.preventDefault();
+                dropZone.classList.remove("dragover");
+                const file = e.dataTransfer.files[0];
+                if (file) handleFileSelect(file);
+            });
+
+            document.getElementById("submit-btn").addEventListener("click", submitProject);
+            document.getElementById("add-role-btn").addEventListener("click", addRole);
+
+            loadProjectForEditing();
+        }
+
+        // ── Thumbnail tab switching ──
+        function switchTab(tab) {
+            document.getElementById("tab-file").classList.toggle("active", tab === "file");
+            document.getElementById("tab-url").classList.toggle("active", tab === "url");
+            document.getElementById("panel-file").classList.toggle("active", tab === "file");
+            document.getElementById("panel-url").classList.toggle("active", tab === "url");
+        }
+
+        // ── File upload handling ──
+        function handleFileSelect(file) {
+            if (!file) return;
+
+            if (file.size > 2 * 1024 * 1024) {
+                showStatus("Image size must not exceed 2 MB!", "error");
+                return;
+            }
+
+            if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+                showStatus("Only JPG, PNG, WEBP formats are accepted!", "error");
+                return;
+            }
+
+            selectedFile = file;
+            uploadedImageUrl = null;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById("file-preview-img").src = e.target.result;
+                document.getElementById("file-preview").style.display = "block";
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function clearFile() {
+            selectedFile = null;
+            uploadedImageUrl = null;
+            document.getElementById("file-input").value = "";
+            document.getElementById("file-preview").style.display = "none";
+            document.getElementById("file-preview-img").src = "";
+        }
+
+        // ── URL handling ──
+        let urlPreviewTimer = null;
+        function handleUrlInput(value) {
+            uploadedImageUrl = null;
+            selectedFile = null;
+            clearTimeout(urlPreviewTimer);
+            if (!value.trim()) {
+                document.getElementById("url-preview").style.display = "none";
+                return;
+            }
+            urlPreviewTimer = setTimeout(() => showUrlPreview(value.trim()), 600);
+        }
+
+        function showUrlPreview(url) {
+            const img = document.getElementById("url-preview-img");
+            img.src = url;
+            document.getElementById("url-preview").style.display = "block";
+            img.onload = () => { uploadedImageUrl = url; };
+            img.onerror = () => handleUrlError();
+        }
+
+        function handleUrlError() {
+            document.getElementById("url-preview").style.display = "none";
+            uploadedImageUrl = null;
+            showStatus("Image could not be loaded from URL. Please use a direct image link.", "error");
+        }
+
+        function clearUrl() {
+            document.getElementById("thumbnail-url-input").value = "";
+            document.getElementById("url-preview").style.display = "none";
+            uploadedImageUrl = null;
+        }
+
+        // ── Upload file to Supabase Storage ──
+        async function uploadFileToStorage(file, userId) {
+            const ext = file.name.split('.').pop();
+            const fileName = `${userId}/${Date.now()}.${ext}`;
+            const SUPABASE_URL = (window.__ENV__ || {}).SUPABASE_URL || "";
+            const SUPABASE_ANON_KEY = (window.__ENV__ || {}).SUPABASE_ANON_KEY || "";
+            const token = window.SupabaseClient.getSession()?.access_token || SUPABASE_ANON_KEY;
+
+            const res = await fetch(`${SUPABASE_URL}/storage/v1/object/project_images/${fileName}`, {
+                method: "POST",
+                headers: {
+                    "apikey": SUPABASE_ANON_KEY,
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": file.type,
+                    "x-upsert": "true"
+                },
+                body: file
+            });
+
+            if (!res.ok) {
+                const err = await res.text();
+                throw new Error("Image upload failed: " + err);
+            }
+
+            return `${SUPABASE_URL}/storage/v1/object/public/project_images/${fileName}`;
+        }
+
+        // ── Get final thumbnail URL ──
+        async function getFinalThumbnailUrl() {
+            if (selectedFile) {
+                document.getElementById("upload-progress").style.display = "block";
+                try {
+                    const url = await uploadFileToStorage(selectedFile, currentUser.id);
+                    document.getElementById("upload-progress").style.display = "none";
+                    return url;
+                } catch (err) {
+                    document.getElementById("upload-progress").style.display = "none";
+                    throw err;
+                }
+            }
+
+            if (uploadedImageUrl) return uploadedImageUrl;
+
+            return null;
+        }
+
+        // ── Roles ──
+        function addRole() {
+            const role = {
+                id: Date.now(),
+                title: "", description: "", skills: [],
+                level: "beginner", commitment: "part_time",
+                compensation: "volunteer", max_positions: 1
+            };
+            roles.push(role);
+            renderRoles();
+        }
+
+        function removeRole(roleId) {
+            roles = roles.filter(r => r.id !== roleId);
+            renderRoles();
+        }
+
+        function updateRole(roleId, field, value) {
+            const role = roles.find(r => r.id === roleId);
+            if (role) role[field] = value;
+        }
+
+        function addRoleSkill(roleId, skill) {
+            const role = roles.find(r => r.id === roleId);
+            if (role && skill && !role.skills.includes(skill)) {
+                role.skills.push(skill);
+                renderRoles();
+            }
+        }
+
+        function removeRoleSkill(roleId, skill) {
+            const role = roles.find(r => r.id === roleId);
+            if (role) {
+                role.skills = role.skills.filter(s => s !== skill);
+                renderRoles();
+            }
+        }
+
+        function renderRoles() {
+            const container = document.getElementById("roles-container");
+            container.innerHTML = roles.map(role => `
+                <div class="role-card" data-role-id="${role.id}">
+                    <div class="role-header">
+                        <input type="text" placeholder="Role Title (e.g. Frontend Developer)" value="${role.title}" onchange="updateRole(${role.id}, 'title', this.value)">
+                        <button type="button" onclick="removeRole(${role.id})" class="remove-role-btn">×</button>
+                    </div>
+                    <textarea placeholder="Role description..." onchange="updateRole(${role.id}, 'description', this.value)">${role.description}</textarea>
+                    <div class="role-skills">
+                        <input type="text" placeholder="Add skill and press Enter..." onkeydown="if(event.key==='Enter'){event.preventDefault();addRoleSkill(${role.id}, this.value.trim()); this.value=''}">
+                        <div class="role-skills-tags">
+                            ${role.skills.map(skill => `<span class="skill-tag">${skill} <button onclick="removeRoleSkill(${role.id}, '${skill}')">×</button></span>`).join('')}
+                        </div>
+                    </div>
+                    <div class="role-details">
+                        <select onchange="updateRole(${role.id}, 'level', this.value)">
+                            <option value="beginner" ${role.level === 'beginner' ? 'selected' : ''}>Beginner</option>
+                            <option value="intermediate" ${role.level === 'intermediate' ? 'selected' : ''}>Intermediate</option>
+                            <option value="expert" ${role.level === 'expert' ? 'selected' : ''}>Expert</option>
+                        </select>
+                        <select onchange="updateRole(${role.id}, 'commitment', this.value)">
+                            <option value="part_time" ${role.commitment === 'part_time' ? 'selected' : ''}>Part-time</option>
+                            <option value="full_time" ${role.commitment === 'full_time' ? 'selected' : ''}>Full-time</option>
+                            <option value="contract" ${role.commitment === 'contract' ? 'selected' : ''}>Contract</option>
+                        </select>
+                        <select onchange="updateRole(${role.id}, 'compensation', this.value)">
+                            <option value="volunteer" ${role.compensation === 'volunteer' ? 'selected' : ''}>Volunteer</option>
+                            <option value="equity" ${role.compensation === 'equity' ? 'selected' : ''}>Equity</option>
+                            <option value="paid" ${role.compensation === 'paid' ? 'selected' : ''}>Paid</option>
+                        </select>
+                        <input type="number" min="1" value="${role.max_positions}" onchange="updateRole(${role.id}, 'max_positions', parseInt(this.value))" placeholder="#">
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ── Tags ──
+        function addTag(value) {
+            if (!value || techStack.includes(value) || techStack.length >= 10) return;
+            techStack.push(value);
+            renderTags();
+        }
+
+        function removeTag(value) {
+            techStack = techStack.filter(t => t !== value);
+            renderTags();
+        }
+
+        function renderTags() {
+            const wrapper = document.getElementById("tags-wrapper");
+            const input = document.getElementById("tech-input");
+            wrapper.querySelectorAll(".tag-chip").forEach(c => c.remove());
+            techStack.forEach(tag => {
+                const chip = document.createElement("span");
+                chip.className = "tag-chip";
+                chip.innerHTML = `${tag} <button type="button" onclick="removeTag('${tag}')">×</button>`;
+                wrapper.insertBefore(chip, input);
+            });
+        }
+
+        window.removeTag = removeTag;
+
+        // ── Submit ──
+        async function submitProject() {
+            const btn = document.getElementById("submit-btn");
+
+            const title = document.getElementById("title").value.trim();
+            const tagline = document.getElementById("tagline").value.trim();
+            const description = document.getElementById("description").value.trim();
+            const live_url = document.getElementById("live-url").value.trim();
+            const github_url = document.getElementById("github-url").value.trim();
+            const status = document.querySelector('input[name="status"]:checked').value;
+
+            if (!title) { showStatus("Project title is required.", "error"); return; }
+            if (!tagline) { showStatus("Tagline is required.", "error"); return; }
+
+            btn.disabled = true;
+            btn.textContent = isEditing ? "Updating..." : "Submitting...";
+
+            try {
+                let thumbnail_url = null;
+                try {
+                    thumbnail_url = await getFinalThumbnailUrl();
+                } catch (imgErr) {
+                    showStatus("⚠️ " + imgErr.message, "error");
+                    btn.disabled = false;
+                    btn.textContent = isEditing ? "✏️ Update Project" : "🚀 Submit Project";
+                    return;
+                }
+
+                let projectId;
+
+                if (isEditing) {
+                    await window.SupabaseClient.supabaseFetch(`projects?id=eq.${editProjectId}`, {
+                        method: "PATCH",
+                        body: JSON.stringify({ title, tagline, description, tech_stack: techStack, live_url: live_url || null, github_url: github_url || null, thumbnail_url, status })
+                    });
+                    projectId = editProjectId;
+
+                    const existingRoles = await window.SupabaseClient.supabaseFetch(`project_roles?project_id=eq.${projectId}`, { method: "GET" });
+                    const existingRoleIds = existingRoles.map(r => r.id);
+                    const currentRoleIds = roles.map(r => r.id).filter(id => id > 1000000000000);
+                    const rolesToDelete = existingRoleIds.filter(id => !currentRoleIds.includes(id));
+
+                    for (const roleId of rolesToDelete) {
+                        await window.SupabaseClient.supabaseFetch(`project_roles?id=eq.${roleId}`, { method: "DELETE" });
+                    }
+
+                    for (const role of roles) {
+                        if (role.id > 1000000000000) {
+                            await window.SupabaseClient.supabaseFetch(`project_roles?id=eq.${role.id}`, {
+                                method: "PATCH",
+                                body: JSON.stringify({ title: role.title, description: role.description, skills: role.skills, level: role.level, commitment: role.commitment, compensation: role.compensation, max_positions: role.max_positions })
+                            });
+                        } else {
+                            await window.SupabaseClient.supabaseFetch("project_roles", {
+                                method: "POST",
+                                body: JSON.stringify({ project_id: projectId, title: role.title, description: role.description, skills: role.skills, level: role.level, commitment: role.commitment, compensation: role.compensation, max_positions: role.max_positions, filled_positions: 0 })
+                            });
+                        }
+                    }
+
+                } else {
+                    const projectData = await window.SupabaseClient.supabaseFetch("projects", {
+                        method: "POST",
+                        body: JSON.stringify({ user_id: currentUser.id, title, tagline, description, tech_stack: techStack, live_url: live_url || null, github_url: github_url || null, thumbnail_url, status }),
+                        prefer: "return=representation"
+                    });
+
+                    projectId = projectData?.[0]?.id || null;
+                    if (!projectId) throw new Error("Project created but project ID could not be retrieved.");
+
+                    for (const role of roles) {
+                        await window.SupabaseClient.supabaseFetch("project_roles", {
+                            method: "POST",
+                            body: JSON.stringify({ project_id: projectId, title: role.title, description: role.description, skills: role.skills, level: role.level, commitment: role.commitment, compensation: role.compensation, max_positions: role.max_positions, filled_positions: 0 }),
+                            prefer: "return=minimal"
+                        });
+                    }
+                }
+
+                showStatus(isEditing ? "✏️ Project updated successfully! Redirecting..." : "🎉 Project submitted successfully! Redirecting...", "success");
+                setTimeout(() => { window.location.href = "/showcase/index.html"; }, 1500);
+
+            } catch (err) {
+                console.error("Submit error:", err);
+                showStatus("Failed to " + (isEditing ? "update" : "submit") + ": " + err.message, "error");
+                btn.disabled = false;
+                btn.textContent = isEditing ? "✏️ Update Project" : "🚀 Submit Project";
+            }
+        }
+
+        function showStatus(msg, type) {
+            const el = document.getElementById("status-msg");
+            el.textContent = msg;
+            el.className = `status-msg ${type}`;
+        }
+    </script>
+</body>
+</html>

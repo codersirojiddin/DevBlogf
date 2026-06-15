@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ither — Login</title>
+    <link rel="stylesheet" href="/assets/style.css">
+    <style>
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 20px 0;
+            color: #aaa;
+            font-size: 0.85rem;
+        }
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e2e8f0;
+        }
+        .btn-google {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 11px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #333;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s;
+            margin-bottom: 4px;
+        }
+        .btn-google:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
+        .btn-google svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body>
+    <script src="/lib/header.js"></script>
+
+    <div class="page-wrapper">
+        <div class="auth-box">
+            <h1>Welcome</h1>
+            <p class="sub">Sign in or create an account to publish posts</p>
+
+            <!-- Google Sign In -->
+            <button class="btn-google" id="google-btn">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                </svg>
+                Enter with Google
+            </button>
+            <p class="status" id="google-status"></p>
+
+            <div class="divider">yoki</div>
+
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="tab-login">Sign In</button>
+                <button class="auth-tab" id="tab-signup">Sign Up</button>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <div id="form-login">
+                <div class="form-row">
+                    <label>Email</label>
+                    <input type="email" id="login-email" placeholder="you@example.com">
+                </div>
+                <div class="form-row">
+                    <label>Password</label>
+                    <input type="password" id="login-password" placeholder="••••••••">
+                </div>
+                <button class="btn btn-full" id="login-btn">Sign In</button>
+                <p class="status" id="login-status"></p>
+            </div>
+
+            <!-- SIGNUP FORM -->
+            <div id="form-signup" hidden>
+                <div class="form-row">
+                    <label>Username</label>
+                    <input type="text" id="signup-username" placeholder="yourname">
+                </div>
+                <div class="form-row">
+                    <label>Email</label>
+                    <input type="email" id="signup-email" placeholder="you@example.com">
+                </div>
+                <div class="form-row">
+                    <label>Password</label>
+                    <input type="password" id="signup-password" placeholder="min 6 characters">
+                </div>
+                <button class="btn btn-full" id="signup-btn">Create Account</button>
+                <p class="status" id="signup-status"></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/lib/supabase.js"></script>
+    <script src="/lib/user-menu.js"></script>
+    <script>
+        // Credentials window.__ENV__ dan olinadi (Cloudflare Pages middleware inject qiladi)
+        const _SB_URL = (window.__ENV__ || {}).SUPABASE_URL || "";
+        const _SB_KEY = (window.__ENV__ || {}).SUPABASE_ANON_KEY || "";
+
+        if (window.SupabaseClient.getCurrentUser()) {
+            window.location.href = "../community/index.html";
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            initializeUserMenu();
+            handleOAuthCallback();
+        });
+
+        // ── Google OAuth callback handler ──
+        async function handleOAuthCallback() {
+            const hash = window.location.hash;
+            if (!hash.includes("access_token")) return;
+
+            const params = new URLSearchParams(hash.substring(1));
+            const access_token = params.get("access_token");
+            const refresh_token = params.get("refresh_token");
+            if (!access_token) return;
+
+            try {
+                const res = await fetch(`${_SB_URL}/auth/v1/user`, {
+                    headers: {
+                        "apikey": _SB_KEY,
+                        "Authorization": `Bearer ${access_token}`
+                    }
+                });
+                const user = await res.json();
+
+                // Save session to localStorage
+                const session = { access_token, refresh_token, user };
+                localStorage.setItem("sb_session", JSON.stringify(session));
+
+                // Ensure profile exists
+                if (window.SupabaseClient.ensureProfile) {
+                    const username = user.user_metadata?.full_name?.split(" ")[0]
+                                  || user.email?.split("@")[0]
+                                  || "user";
+                    await window.SupabaseClient.ensureProfile(user, { username });
+
+                    const avatar_url = user.user_metadata?.avatar_url || "";
+                    if (avatar_url) {
+                        await window.SupabaseClient.supabaseFetch(`profiles?id=eq.${user.id}`, {
+                            method: "PATCH",
+                            body: JSON.stringify({ avatar_url }),
+                            prefer: "return=minimal"
+                        });
+                    }
+                }
+
+                window.location.href = "../community/index.html";
+            } catch (err) {
+                console.error("OAuth callback error:", err);
+                document.getElementById("google-status").textContent = "Google login xatolik: " + err.message;
+                document.getElementById("google-status").className = "status status--error";
+            }
+        }
+
+        // ── Google Sign In button ──
+        document.getElementById("google-btn").addEventListener("click", () => {
+            const redirectTo = encodeURIComponent(window.location.origin + window.location.pathname);
+            window.location.href = `${_SB_URL}/auth/v1/authorize?provider=google&redirect_to=${redirectTo}&apikey=${_SB_KEY}`;
+        });
+
+        // ── Tabs ──
+        document.getElementById("tab-login").addEventListener("click", () => {
+            document.getElementById("form-login").hidden = false;
+            document.getElementById("form-signup").hidden = true;
+            document.getElementById("tab-login").classList.add("active");
+            document.getElementById("tab-signup").classList.remove("active");
+        });
+
+        document.getElementById("tab-signup").addEventListener("click", () => {
+            document.getElementById("form-signup").hidden = false;
+            document.getElementById("form-login").hidden = true;
+            document.getElementById("tab-signup").classList.add("active");
+            document.getElementById("tab-login").classList.remove("active");
+        });
+
+        // ── Sign In ──
+        document.getElementById("login-btn").addEventListener("click", async () => {
+            const email = document.getElementById("login-email").value.trim();
+            const password = document.getElementById("login-password").value;
+            const status = document.getElementById("login-status");
+            status.textContent = "Signing in...";
+            status.className = "status";
+            try {
+                const session = await window.SupabaseClient.signIn(email, password);
+                if (window.SupabaseClient.ensureProfile) {
+                    await window.SupabaseClient.ensureProfile(session.user, { username: email.split("@")[0] });
+                }
+                status.textContent = "✓ Signed in! Redirecting...";
+                status.className = "status status--ok";
+                setTimeout(() => window.location.href = "../community/index.html", 800);
+            } catch (err) {
+                status.textContent = err.message;
+                status.className = "status status--error";
+            }
+        });
+
+        // ── Sign Up ──
+        document.getElementById("signup-btn").addEventListener("click", async () => {
+            const username = document.getElementById("signup-username").value.trim();
+            const email = document.getElementById("signup-email").value.trim();
+            const password = document.getElementById("signup-password").value;
+            const status = document.getElementById("signup-status");
+
+            if (!username) { status.textContent = "Username is required."; status.className = "status status--error"; return; }
+
+            status.textContent = "Creating account...";
+            status.className = "status";
+            try {
+                const session = await window.SupabaseClient.signUp(email, password, username);
+                if (window.SupabaseClient.ensureProfile) {
+                    await window.SupabaseClient.ensureProfile(session.user, { username });
+                }
+                status.textContent = "✓ Account created! Check your email to confirm, then sign in.";
+                status.className = "status status--ok";
+            } catch (err) {
+                status.textContent = err.message;
+                status.className = "status status--error";
+            }
+        });
+    </script>
+</body>
+</html>

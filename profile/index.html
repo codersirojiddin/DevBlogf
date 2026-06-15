@@ -1,0 +1,985 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4819817034021416"
+
+     crossorigin="anonymous"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ither — Profile</title>
+    <link rel="stylesheet" href="/assets/style.css" />
+    <style>
+      .profile-stats {
+        display: flex;
+        gap: 24px;
+        margin: 10px 0;
+      }
+
+      .profile-stat {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 0.9rem;
+        color: #555;
+      }
+
+      .profile-stat strong {
+        font-size: 1.2rem;
+        color: #111;
+      }
+
+      .btn--follow {
+        background-color: #2563eb;
+        color: white;
+        border: none;
+        padding: 8px 20px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 600;
+        transition: background 0.2s;
+      }
+
+      .btn--follow:hover {
+        background-color: #1d4ed8;
+      }
+      .btn--follow.following {
+        background-color: #e5e7eb;
+        color: #374151;
+      }
+
+      .profile-skills,
+      .profile-tech {
+        margin: 16px 0;
+      }
+      .profile-skills h4,
+      .profile-tech h4 {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #555;
+        margin-bottom: 8px;
+      }
+
+      .skills-list,
+      .tech-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .skill-badge {
+        background: #dbeafe;
+        color: #1e40af;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 500;
+      }
+
+      .tech-badge {
+        background: #f1f5f9;
+        color: #334155;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 500;
+      }
+
+      .profile-availability {
+        margin: 16px 0;
+      }
+
+      .availability-badge {
+        padding: 4px 12px;
+        border-radius: 16px;
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+
+      .availability-badge.available {
+        background: #d1fae5;
+        color: #065f46;
+      }
+      .availability-badge.unavailable {
+        background: #fee2e2;
+        color: #dc2626;
+      }
+
+      .form-row {
+        margin-bottom: 16px;
+      }
+
+      .form-row label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: #333;
+      }
+
+      .form-row input,
+      .form-row textarea,
+      .form-row select {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        box-sizing: border-box;
+      }
+
+      .form-row textarea {
+        resize: vertical;
+        min-height: 80px;
+      }
+
+      .avatar-tabs {
+        display: flex;
+        gap: 0;
+        margin-bottom: 10px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        overflow: hidden;
+      }
+
+      .avatar-tab {
+        flex: 1;
+        padding: 7px 10px;
+        border: none;
+        background: #f8fafc;
+        cursor: pointer;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #64748b;
+        transition: all 0.15s;
+      }
+
+      .avatar-tab.active {
+        background: #2563eb;
+        color: white;
+      }
+      .avatar-tab:first-child {
+        border-right: 1px solid #d1d5db;
+      }
+
+      .avatar-panel {
+        display: none;
+      }
+      .avatar-panel.active {
+        display: block;
+      }
+
+      .avatar-drop-zone {
+        border: 2px dashed #cbd5e1;
+        border-radius: 6px;
+        padding: 20px 12px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        background: #f8fafc;
+        position: relative;
+      }
+
+      .avatar-drop-zone:hover,
+      .avatar-drop-zone.dragover {
+        border-color: #2563eb;
+        background: #eff6ff;
+      }
+
+      .avatar-drop-zone input[type="file"] {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+      }
+
+      .avatar-drop-text {
+        font-size: 0.85rem;
+        color: #64748b;
+        font-weight: 500;
+      }
+      .avatar-drop-hint {
+        font-size: 0.72rem;
+        color: #94a3b8;
+        margin-top: 3px;
+      }
+
+      .avatar-preview-wrap {
+        display: none;
+        margin-top: 8px;
+        position: relative;
+        width: fit-content;
+      }
+
+      .avatar-preview-wrap img {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #e2e8f0;
+      }
+
+      .avatar-preview-remove {
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        background: rgba(0, 0, 0, 0.6);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .avatar-upload-progress {
+        display: none;
+        margin-top: 6px;
+        font-size: 0.8rem;
+        color: #2563eb;
+        font-weight: 500;
+      }
+
+      .avatar-url-hint {
+        font-size: 0.75rem;
+        color: #888;
+        margin-top: 4px;
+      }
+
+      .avatar-large {
+        overflow: hidden;
+      }
+
+      .avatar-large img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="/lib/header.js"></script>
+
+    <div class="page-wrapper">
+      <div id="profile-header" class="profile-header">
+        <div class="loading-state">
+          <div class="spinner"></div>
+          Loading...
+        </div>
+      </div>
+      <button class="settings-toggle" id="toggle-btn" aria-label="Open settings">
+        <i class="fa-solid fa-gear"></i>
+    </button>
+
+    <div class="settings-panel" id="settings-panel">
+        <div class="panel-header">
+            <h3>Configuration</h3>
+            <button class="close-panel" id="close-btn" aria-label="Close settings">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        
+        <div class="setting-section">
+            <span class="setting-label">Interface Theme</span>
+            <div class="theme-options">
+                <button class="theme-btn" id="theme-light" data-theme="light">
+                    <i class="fa-regular fa-sun"></i> Light
+                </button>
+                <button class="theme-btn" id="theme-dark" data-theme="dark">
+                    <i class="fa-regular fa-moon"></i> Dark
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <main class="content">
+        <h1>Dashboard Interface</h1>
+        <p>Click the gear icon in the top right corner to customize your viewing experience.</p>
+    </main>
+
+      <div class="edit-profile-form" id="edit-form">
+        <h3>Edit Profile</h3>
+        <div class="form-row">
+          <label>Username</label>
+          <input type="text" id="edit-username" placeholder="yourname" />
+        </div>
+        <div class="form-row">
+          <label>Bio</label>
+          <textarea
+            id="edit-bio"
+            placeholder="Tell us about yourself..."
+            rows="3"
+          ></textarea>
+        </div>
+        <div class="form-row">
+          <label>Skills (comma separated)</label>
+          <input
+            type="text"
+            id="edit-skills"
+            placeholder="React, Node.js, Python"
+          />
+        </div>
+        <div class="form-row">
+          <label>Tech Stack (comma separated)</label>
+          <input
+            type="text"
+            id="edit-tech-stack"
+            placeholder="JavaScript, TypeScript, PostgreSQL"
+          />
+        </div>
+        <div class="form-row">
+          <label>Availability</label>
+          <select id="edit-availability">
+            <option value="true">Open to join projects</option>
+            <option value="false">Not available</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label>Profile Photo</label>
+          <div class="avatar-tabs">
+            <button
+              type="button"
+              class="avatar-tab active"
+              onclick="switchAvatarTab('file')"
+              id="atab-file"
+            >
+              📁 Choose from files 
+            </button>
+            <button
+              type="button"
+              class="avatar-tab"
+              onclick="switchAvatarTab('url')"
+              id="atab-url"
+            >
+              🔗 Enter URL
+            </button>
+          </div>
+
+          <div class="avatar-panel active" id="apanel-file">
+            <div class="avatar-drop-zone" id="avatar-drop-zone">
+              <input
+                type="file"
+                id="avatar-file-input"
+                accept="image/jpeg,image/png,image/webp"
+                onchange="handleAvatarFile(this.files[0])"
+              />
+              <div class="avatar-drop-text">🖼️ Choose image</div>
+              <div class="avatar-drop-hint">JPG, PNG, WEBP — max 2 MB</div>
+            </div>
+            <div class="avatar-upload-progress" id="avatar-progress">
+              ⏳ Loading...
+            </div>
+            <div class="avatar-preview-wrap" id="avatar-file-preview">
+              <img id="avatar-file-preview-img" src="" alt="Preview" />
+              <button
+                type="button"
+                class="avatar-preview-remove"
+                onclick="clearAvatarFile()"
+              >
+                ×
+              </button>
+            </div>
+          </div>
+
+          <div class="avatar-panel" id="apanel-url">
+            <input
+              type="url"
+              id="edit-avatar"
+              placeholder="https://i.imgur.com/photo.jpg"
+              oninput="handleAvatarUrl(this.value)"
+            />
+            <div class="avatar-preview-wrap" id="avatar-url-preview">
+              <img
+                id="avatar-url-preview-img"
+                src=""
+                alt="Preview"
+                onerror="clearAvatarUrlPreview()"
+              />
+              <button
+                type="button"
+                class="avatar-preview-remove"
+                onclick="clearAvatarUrl()"
+              >
+                ×
+              </button>
+            </div>
+            <p class="avatar-url-hint">Imgur.com orqali bepul rasm yuklang</p>
+          </div>
+        </div>
+
+        <div class="profile-actions">
+          <button class="btn" id="save-profile-btn">Save</button>
+          <button class="btn btn--secondary" id="cancel-edit-btn">
+            Cancel
+          </button>
+        </div>
+        <p class="status" id="edit-status"></p>
+      </div>
+
+      <h2 class="section-title">Posts</h2>
+      <div id="user-posts" class="posts-grid">
+        <div class="loading-state">
+          <div class="spinner"></div>
+          Loading...
+        </div>
+      </div>
+    </div>
+
+    <script src="/lib/supabase.js"></script>
+    <script src="/lib/posts.js"></script>
+    <script src="/lib/user-menu.js"></script>
+    <script>
+      const toggleBtn = document.getElementById('toggle-btn');
+const closeBtn = document.getElementById('close-btn');
+const panel = document.getElementById('settings-panel');
+const themeButtons = document.querySelectorAll('.theme-btn');
+
+toggleBtn.addEventListener('click', () => {
+    panel.classList.add('open');
+});
+
+closeBtn.addEventListener('click', () => {
+    panel.classList.remove('open');
+});
+
+document.addEventListener('click', (e) => {
+    if (!panel.contains(e.target) && !toggleBtn.contains(e.target)) {
+        panel.classList.remove('open');
+    }
+});
+
+const setTheme = (theme) => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('preferred-theme', theme);
+    updateButtonUI(theme);
+};
+
+const updateButtonUI = (activeTheme) => {
+    themeButtons.forEach(btn => {
+        if (btn.getAttribute('data-theme') === activeTheme) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+};
+
+themeButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const selectedTheme = button.getAttribute('data-theme');
+        setTheme(selectedTheme);
+    });
+});
+
+const savedTheme = localStorage.getItem('preferred-theme') || 'light';
+setTheme(savedTheme);
+      const params = new URLSearchParams(window.location.search);
+      const profileId = params.get("id");
+      const currentUser = window.SupabaseClient.getCurrentUser();
+      let loadedProfile = null;
+
+      if (!profileId) window.location.href = "/community/index.html";
+
+      document.addEventListener("DOMContentLoaded", () => {
+        initializeUserMenu();
+      });
+
+      const isOwner = currentUser?.id === profileId;
+
+      let avatarSelectedFile = null;
+      let avatarFinalUrl = null;
+
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      function switchAvatarTab(tab) {
+        document
+          .getElementById("atab-file")
+          .classList.toggle("active", tab === "file");
+        document
+          .getElementById("atab-url")
+          .classList.toggle("active", tab === "url");
+        document
+          .getElementById("apanel-file")
+          .classList.toggle("active", tab === "file");
+        document
+          .getElementById("apanel-url")
+          .classList.toggle("active", tab === "url");
+      }
+
+      function handleAvatarFile(file) {
+        if (!file) return;
+        if (file.size > 2 * 1024 * 1024) {
+          alert("Rasm hajmi 2 MB dan oshmasligi kerak!");
+          return;
+        }
+        if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+          alert("Faqat JPG, PNG, WEBP formatlar!");
+          return;
+        }
+        avatarSelectedFile = file;
+        avatarFinalUrl = null;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          document.getElementById("avatar-file-preview-img").src =
+            e.target.result;
+          document.getElementById("avatar-file-preview").style.display =
+            "block";
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function clearAvatarFile() {
+        avatarSelectedFile = null;
+        avatarFinalUrl = null;
+        document.getElementById("avatar-file-input").value = "";
+        document.getElementById("avatar-file-preview").style.display = "none";
+      }
+
+      let avatarUrlTimer = null;
+      function handleAvatarUrl(value) {
+        avatarFinalUrl = null;
+        avatarSelectedFile = null;
+        clearTimeout(avatarUrlTimer);
+        if (!value.trim()) {
+          document.getElementById("avatar-url-preview").style.display = "none";
+          return;
+        }
+        avatarUrlTimer = setTimeout(() => {
+          const img = document.getElementById("avatar-url-preview-img");
+          img.src = value.trim();
+          img.onload = () => {
+            avatarFinalUrl = value.trim();
+            document.getElementById("avatar-url-preview").style.display =
+              "block";
+          };
+        }, 600);
+      }
+
+      function clearAvatarUrlPreview() {
+        document.getElementById("avatar-url-preview").style.display = "none";
+        avatarFinalUrl = null;
+      }
+
+      function clearAvatarUrl() {
+        document.getElementById("edit-avatar").value = "";
+        document.getElementById("avatar-url-preview").style.display = "none";
+        avatarFinalUrl = null;
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const dz = document.getElementById("avatar-drop-zone");
+        if (dz) {
+          dz.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            dz.classList.add("dragover");
+          });
+          dz.addEventListener("dragleave", () =>
+            dz.classList.remove("dragover"),
+          );
+          dz.addEventListener("drop", (e) => {
+            e.preventDefault();
+            dz.classList.remove("dragover");
+            const file = e.dataTransfer.files[0];
+            if (file) handleAvatarFile(file);
+          });
+        }
+      });
+
+      async function uploadAvatarToStorage(file, userId) {
+        const ext = file.name.split(".").pop();
+        const fileName = `${userId}/avatar_${Date.now()}.${ext}`;
+        const SUPABASE_URL      = (window.__ENV__ || {}).SUPABASE_URL      || "";
+        const SUPABASE_ANON_KEY = (window.__ENV__ || {}).SUPABASE_ANON_KEY || "";
+        const token =
+          window.SupabaseClient.getSession()?.access_token || SUPABASE_ANON_KEY;
+        const res = await fetch(
+          `${SUPABASE_URL}/storage/v1/object/project_images/${fileName}`,
+          {
+            method: "POST",
+            headers: {
+              apikey: SUPABASE_ANON_KEY,
+              Authorization: `Bearer ${token}`,
+              "Content-Type": file.type,
+              "x-upsert": "true",
+            },
+            body: file,
+          },
+        );
+        if (!res.ok) {
+          const err = await res.text();
+          throw new Error("Avatar yuklanmadi: " + err);
+        }
+        return `${SUPABASE_URL}/storage/v1/object/public/project_images/${fileName}`;
+      }
+
+      async function getFinalAvatarUrl(existingUrl) {
+        if (avatarSelectedFile) {
+          document.getElementById("avatar-progress").style.display = "block";
+          try {
+            const url = await uploadAvatarToStorage(
+              avatarSelectedFile,
+              currentUser.id,
+            );
+            document.getElementById("avatar-progress").style.display = "none";
+            return url;
+          } catch (err) {
+            document.getElementById("avatar-progress").style.display = "none";
+            throw err;
+          }
+        }
+        if (avatarFinalUrl) return avatarFinalUrl;
+        return existingUrl;
+      }
+
+      async function loadProfile() {
+        const headerEl = document.getElementById("profile-header");
+        try {
+          const [data, followersCount, followingCount] = await Promise.all([
+            window.SupabaseClient.supabaseFetch(
+              `profiles?id=eq.${encodeURIComponent(profileId)}`,
+            ),
+            window.SupabaseClient.getFollowersCount(profileId),
+            window.SupabaseClient.getFollowingCount(profileId),
+          ]);
+
+          const profile = data?.[0];
+          loadedProfile = profile;
+          if (!profile) {
+            headerEl.innerHTML = `<p>User not found.</p>`;
+            return;
+          }
+
+          let alreadyFollowing = false;
+          if (currentUser && !isOwner) {
+            alreadyFollowing = await window.SupabaseClient.isFollowing(
+              currentUser.id,
+              profileId,
+            );
+          }
+
+          const avatarContent = profile.avatar_url
+            ? `<img src="${profile.avatar_url}" alt="${profile.username}">`
+            : profile.username[0].toUpperCase();
+
+          headerEl.innerHTML = `
+                    <div class="avatar-large">${avatarContent}</div>
+                    <div class="profile-info">
+                        <h2>${escapeHtml(profile.username)}</h2>
+                        ${profile.bio ? `<p class="profile-bio">${escapeHtml(profile.bio)}</p>` : ""}
+                        <p class="profile-joined">Joined ${window.DevBlogPosts.formatDate(profile.created_at)}</p>
+                        <div class="profile-stats">
+                            <div class="profile-stat">
+                                <strong id="followers-count">${followersCount}</strong>
+                                <span>Followers</span>
+                            </div>
+                            <div class="profile-stat">
+                                <strong>${followingCount}</strong>
+                                <span>Following</span>
+                            </div>
+                            <div class="profile-stat">
+                                <strong>${profile.trust_score || 0}</strong>
+                                <span>Trust Score</span>
+                            </div>
+                        </div>
+                        ${
+                          profile.skills &&
+                          Array.isArray(profile.skills) &&
+                          profile.skills.length > 0
+                            ? `
+                            <div class="profile-skills">
+                                <h4>Skills</h4>
+                                <div class="skills-list">
+                                    ${profile.skills.map((skill) => `<span class="skill-badge">${escapeHtml(skill)}</span>`).join("")}
+                                </div>
+                            </div>
+                        `
+                            : ""
+                        }
+                        ${
+                          profile.tech_stack &&
+                          Array.isArray(profile.tech_stack) &&
+                          profile.tech_stack.length > 0
+                            ? `
+                            <div class="profile-tech">
+                                <h4>Tech Stack</h4>
+                                <div class="tech-list">
+                                    ${profile.tech_stack.map((tech) => `<span class="tech-badge">${escapeHtml(tech)}</span>`).join("")}
+                                </div>
+                            </div>
+                        `
+                            : ""
+                        }
+                        <div class="profile-availability">
+                            <span class="availability-badge ${profile.availability !== false ? "available" : "unavailable"}">
+                                ${profile.availability !== false ? "Open to join projects" : "Not available"}
+                            </span>
+                        </div>
+                        ${
+                          isOwner
+                            ? `<button class="btn btn--secondary" id="edit-btn">Edit Profile</button>`
+                            : currentUser
+                              ? `<button class="btn--follow ${alreadyFollowing ? "following" : ""}" id="follow-btn">
+                                       ${alreadyFollowing ? "✓ Following" : "+ Follow"}
+                                   </button>`
+                              : `<a href="/login/index.html" class="btn">Log in to Follow</a>`
+                        }
+                    </div>
+                `;
+
+          if (isOwner) {
+            document
+              .getElementById("edit-btn")
+              .addEventListener("click", () => {
+                document.getElementById("edit-username").value =
+                  profile.username;
+                document.getElementById("edit-bio").value = profile.bio || "";
+                document.getElementById("edit-skills").value = Array.isArray(
+                  profile.skills,
+                )
+                  ? profile.skills.join(", ")
+                  : "";
+                document.getElementById("edit-tech-stack").value =
+                  Array.isArray(profile.tech_stack)
+                    ? profile.tech_stack.join(", ")
+                    : "";
+                // ← TO'G'RI: availability qiymatini aniq o'rnatish
+                document.getElementById("edit-availability").value =
+                  profile.availability === false ? "false" : "true";
+
+                if (profile.avatar_url) {
+                  switchAvatarTab("url");
+                  document.getElementById("edit-avatar").value =
+                    profile.avatar_url;
+                  const img = document.getElementById("avatar-url-preview-img");
+                  img.src = profile.avatar_url;
+                  img.onload = () => {
+                    avatarFinalUrl = profile.avatar_url;
+                    document.getElementById(
+                      "avatar-url-preview",
+                    ).style.display = "block";
+                  };
+                }
+
+                document.getElementById("edit-form").classList.add("visible");
+              });
+          }
+
+          if (!isOwner && currentUser) {
+            const followBtn = document.getElementById("follow-btn");
+            let following = alreadyFollowing;
+
+            followBtn.addEventListener("click", async () => {
+              followBtn.disabled = true;
+              try {
+                if (following) {
+                  await window.SupabaseClient.unfollowUser(
+                    currentUser.id,
+                    profileId,
+                  );
+                  following = false;
+                  followBtn.textContent = "+ Follow";
+                  followBtn.classList.remove("following");
+                  document.getElementById("followers-count").textContent =
+                    parseInt(
+                      document.getElementById("followers-count").textContent,
+                    ) - 1;
+                } else {
+                  await window.SupabaseClient.followUser(
+                    currentUser.id,
+                    profileId,
+                  );
+                  following = true;
+                  followBtn.textContent = "✓ Following";
+                  followBtn.classList.add("following");
+                  document.getElementById("followers-count").textContent =
+                    parseInt(
+                      document.getElementById("followers-count").textContent,
+                    ) + 1;
+                }
+              } catch (err) {
+                alert("Failed to update follow: " + err.message);
+              }
+              followBtn.disabled = false;
+            });
+          }
+
+          document.title = `Ither — ${profile.username}`;
+        } catch (err) {
+          headerEl.innerHTML = `<p>Failed to load profile: ${err.message}</p>`;
+        }
+      }
+
+      async function loadUserPosts() {
+        const container = document.getElementById("user-posts");
+        try {
+          const posts = await window.SupabaseClient.supabaseFetch(
+            `community_posts?user_id=eq.${profileId}&order=created_at.desc`,
+          );
+
+          if (!posts || posts.length === 0) {
+            container.innerHTML = `<p class="empty-state">No posts yet.</p>`;
+            return;
+          }
+
+          container.innerHTML = "";
+          posts.forEach((post) => {
+            const card = document.createElement("article");
+            card.className = "post-card";
+            card.dataset.id = post.id;
+
+            const preview = post.content.split("\n")[0];
+            const hasMore = post.content.split("\n").length > 1;
+
+            card.innerHTML = `
+                        <div class="post-card__heading">
+                            <h3 class="post-card__title">${escapeHtml(post.title)}</h3>
+                            <span class="post-badge">${window.DevBlogPosts.toLabel(post.type)}</span>
+                        </div>
+                        <p class="post-preview">${escapeHtml(preview)}${hasMore ? "..." : ""}</p>
+                        <div class="post-footer">
+                            <span class="post-meta">${window.DevBlogPosts.formatDate(post.created_at)}</span>
+                        </div>
+                        ${
+                          isOwner
+                            ? `
+                            <div class="post-card__actions">
+                                <button class="btn btn--secondary btn--small" data-action="edit" data-id="${post.id}">Edit</button>
+                                <button class="btn btn--danger btn--small" data-action="delete" data-id="${post.id}">Delete</button>
+                            </div>
+                        `
+                            : ""
+                        }
+                    `;
+
+            card.addEventListener("click", async (e) => {
+              const actionBtn = e.target.closest("button[data-action]");
+              if (actionBtn) {
+                e.stopPropagation();
+                const action = actionBtn.dataset.action;
+                const postId = actionBtn.dataset.id;
+
+                if (action === "edit") {
+                  window.location.href = `/publish/index.html?id=${postId}`;
+                  return;
+                }
+
+                if (action === "delete") {
+                  if (!confirm("Delete this post? This cannot be undone."))
+                    return;
+                  try {
+                    await window.SupabaseClient.deleteCommunityPost(postId);
+                    card.remove();
+                    if (!container.querySelector(".post-card")) {
+                      container.innerHTML = `<p class="empty-state">No posts yet.</p>`;
+                    }
+                  } catch (err) {
+                    alert(`Delete failed: ${err.message}`);
+                  }
+                  return;
+                }
+              }
+              window.DevBlogPosts.openPostModal(post);
+            });
+
+            container.appendChild(card);
+          });
+        } catch (err) {
+          container.innerHTML = `<p class="empty-state">Failed to load posts: ${err.message}</p>`;
+        }
+      }
+
+      // ── Save profile — TUZATILGAN QISM ──
+      document
+        .getElementById("save-profile-btn")
+        .addEventListener("click", async () => {
+          const username = document
+            .getElementById("edit-username")
+            .value.trim();
+          const bio = document.getElementById("edit-bio").value.trim();
+          const skills = document
+            .getElementById("edit-skills")
+            .value.split(",")
+            .map((s) => s.trim())
+            .filter((s) => s);
+          const techStack = document
+            .getElementById("edit-tech-stack")
+            .value.split(",")
+            .map((s) => s.trim())
+            .filter((s) => s);
+          const availability =
+            document.getElementById("edit-availability").value === "true";
+          const status = document.getElementById("edit-status");
+
+          if (!username) {
+            status.textContent = "Username is required.";
+            status.className = "status status--error";
+            return;
+          }
+
+          status.textContent = "Saving...";
+          status.className = "status";
+
+          try {
+            const avatar_url = await getFinalAvatarUrl(
+              loadedProfile?.avatar_url || "",
+            );
+
+            // ← TUZATILDI: availability har doim saqlanadi
+            const patchData = {
+              username,
+              bio,
+              avatar_url,
+              skills,
+              tech_stack: techStack,
+              availability,
+            };
+
+            await window.SupabaseClient.supabaseFetch(
+              `profiles?id=eq.${encodeURIComponent(profileId)}`,
+              {
+                method: "PATCH",
+                body: JSON.stringify(patchData),
+                prefer: "return=minimal",
+              },
+            );
+
+            status.textContent = "✓ Saved!";
+            status.className = "status status--ok";
+            document.getElementById("edit-form").classList.remove("visible");
+
+            avatarSelectedFile = null;
+            avatarFinalUrl = null;
+
+            loadProfile();
+          } catch (err) {
+            status.textContent = err.message;
+            status.className = "status status--error";
+          }
+        });
+
+      document
+        .getElementById("cancel-edit-btn")
+        .addEventListener("click", () => {
+          document.getElementById("edit-form").classList.remove("visible");
+          avatarSelectedFile = null;
+          avatarFinalUrl = null;
+        });
+
+      loadProfile();
+      loadUserPosts();
+    </script>
+  </body>
+</html>

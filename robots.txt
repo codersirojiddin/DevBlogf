@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+Disallow: /iamadmin/
+
+Sitemap: https://ither.online/sitemap.xml

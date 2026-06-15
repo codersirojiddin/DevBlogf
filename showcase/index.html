@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4819817034021416"
+
+     crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ither — Showcase</title>
+    <link rel="stylesheet" href="/assets/style.css">
+    <style>
+        .showcase-hero {
+            text-align: center;
+            padding: 48px 20px 32px;
+        }
+
+        .showcase-hero h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .showcase-hero p {
+            color: #555;
+            font-size: 1rem;
+            margin-bottom: 24px;
+        }
+
+        .showcase-filters {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+        }
+
+        .filter-btn {
+            background: #f1f5f9;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #334155;
+            transition: all 0.15s;
+        }
+
+        .filter-btn:hover { background: #e2e8f0; }
+        .filter-btn.active { background: #2563eb; color: white; }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+
+        .project-card__thumbnail {
+            position: relative;
+            width: 100%;
+            height: 180px;
+            background: #f1f5f9;
+            overflow: hidden;
+        }
+
+        .project-card__thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .project-card__placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .project-card__status {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .project-card__status.completed,
+        .project-card__status.launched { background: #d1fae5; color: #065f46; }
+        .project-card__status.in-progress { background: #fef3c7; color: #92400e; }
+        .project-card__status.idea { background: #ede9fe; color: #4c1d95; }
+        .project-card__status.mvp { background: #ede9f6; color: #5b21b6; }
+
+        .project-card__body { padding: 16px; }
+
+        .project-card__top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .project-card__title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 0 0 4px;
+        }
+
+        .project-card__tagline {
+            font-size: 0.85rem;
+            color: #555;
+            margin: 0;
+        }
+
+        .project-card__links {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .icon-btn {
+            font-size: 1.1rem;
+            text-decoration: none;
+            padding: 4px 6px;
+            border-radius: 6px;
+            transition: background 0.15s;
+        }
+
+        .icon-btn:hover { background: #f1f5f9; }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .tech-badge {
+            background: #f1f5f9;
+            color: #334155;
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .project-card__footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 10px;
+            border-top: 1px solid #f1f5f9;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .signal-bar {
+            display: flex;
+            gap: 6px;
+        }
+
+        .signal-btn {
+            background: none;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 4px 10px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .signal-btn:hover { background: #f8fafc; border-color: #94a3b8; }
+        .signal-btn.active { background: #eff6ff; border-color: #2563eb; color: #2563eb; font-weight: 600; }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #888;
+            grid-column: 1 / -1;
+        }
+
+        .empty-state a { color: #2563eb; }
+    </style>
+</head>
+<body>
+    <script src="/lib/header.js"></script>
+    
+
+    <div class="showcase-hero">
+        <h1>🚀 Build Showcase</h1>
+        <p>Discover what developers are building. Share your own projects.</p>
+        <a href="/submit-project/index.html" class="btn" id="submit-btn" style="display:none">+ Submit Project</a>
+    </div>
+
+    <div class="showcase-filters">
+        <button class="filter-btn active" data-filter="all">🔥 All</button>
+        <button class="filter-btn" data-filter="idea">💡 Idea</button>
+        <button class="filter-btn" data-filter="in-progress">🔨 In Progress</button>
+        <button class="filter-btn" data-filter="mvp">🚧 MVP</button>
+        <button class="filter-btn" data-filter="launched">🚀 Launched</button>
+    </div>
+
+    <div class="projects-grid" id="projects-grid">
+        <div class="loading-state" style="grid-column:1/-1;text-align:center;padding:60px">
+            <div class="spinner"></div> Loading projects...
+        </div>
+    </div>
+
+    <script src="/lib/supabase.js"></script>
+    <script src="/lib/user-menu.js"></script>
+    <script src="/lib/project.js"></script>
+    <script>
+        const currentUser = window.SupabaseClient.getCurrentUser();
+        let allProjects = [];
+
+        document.addEventListener("DOMContentLoaded", () => {
+            initializeUserMenu();
+
+            // Show submit button if logged in
+            if (currentUser) {
+                document.getElementById("submit-btn").style.display = "inline-block";
+            }
+        });
+
+        // Filter buttons
+        document.querySelectorAll(".filter-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+                const filter = btn.dataset.filter;
+                renderProjects(filter === "all" ? allProjects : allProjects.filter(p => p.status === filter));
+            });
+        });
+
+        function escapeHtml(str) {
+            return String(str || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+        }
+
+        function formatStatus(status) {
+            const map = {
+                idea: 'Idea',
+                'in-progress': 'In Progress',
+                mvp: 'MVP',
+                launched: 'Launched',
+                completed: 'Launched'
+            };
+            return map[status] || status;
+        }
+
+        function renderProjects(projects) {
+            const grid = document.getElementById("projects-grid");
+            grid.innerHTML = "";
+
+            if (!projects || projects.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <p>No projects yet. <a href="/submit-project/index.html">Be the first to submit!</a></p>
+                    </div>
+                `;
+                return;
+            }
+
+            projects.forEach(project => {
+                const userSignals = project.userSignals || new Set();
+                const counts = project.signalCounts || { useful: 0, inspiring: 0, well_built: 0 };
+
+                const card = document.createElement("article");
+                card.className = "project-card";
+
+                const techBadges = (project.tech_stack || [])
+                    .map(t => `<span class="tech-badge">${escapeHtml(t)}</span>`).join("");
+
+                const thumbnail = project.thumbnail_url
+                    ? `<img src="${escapeHtml(project.thumbnail_url)}" alt="${escapeHtml(project.title)}" loading="lazy">`
+                    : `<div class="project-card__placeholder" style="background:linear-gradient(135deg,#667eea,#764ba2)">🚀</div>`;
+
+                card.innerHTML = `
+                    <div class="project-card__thumbnail">
+                        ${thumbnail}
+                        <span class="project-card__status ${project.status || 'completed'}">${formatStatus(project.status || 'completed')}</span>
+                    </div>
+                    <div class="project-card__body">
+                        <div class="project-card__top">
+                            <div>
+                                <h3 class="project-card__title">${escapeHtml(project.title)}</h3>
+                                <p class="project-card__tagline">${escapeHtml(project.tagline)}</p>
+                            </div>
+                            <div class="project-card__links">
+                                ${project.live_url ? `<a href="${escapeHtml(project.live_url)}" target="_blank" class="icon-btn" title="Live Demo">🌐</a>` : ""}
+                                ${project.github_url ? `<a href="${escapeHtml(project.github_url)}" target="_blank" class="icon-btn" title="GitHub">💻</a>` : ""}
+                            </div>
+                        </div>
+                        <div class="tech-stack">${techBadges}</div>
+                        <div class="project-card__footer">
+                            <a href="/profile/index.html?id=${project.user_id}" class="post-author">by ${escapeHtml(project.username || "Unknown")}</a>
+                            <div class="signal-bar">
+                                <button class="signal-btn ${userSignals.has('useful') ? 'active' : ''}" data-signal="useful" data-id="${project.id}">💡 <span>${counts.useful}</span></button>
+                                <button class="signal-btn ${userSignals.has('inspiring') ? 'active' : ''}" data-signal="inspiring" data-id="${project.id}">🔥 <span>${counts.inspiring}</span></button>
+                                <button class="signal-btn ${userSignals.has('well_built') ? 'active' : ''}" data-signal="well_built" data-id="${project.id}">⚙️ <span>${counts.well_built}</span></button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Signal buttons
+                card.querySelectorAll(".signal-btn").forEach(btn => {
+                    btn.addEventListener("click", async (e) => {
+                        e.stopPropagation();
+                        if (!currentUser) { alert("Please log in to rate projects."); return; }
+                        const signal = btn.dataset.signal;
+                        const projectId = btn.dataset.id;
+                        await window.DevBlogProjects.toggleSignal(projectId, signal);
+                        const countEl = btn.querySelector("span");
+                        const isActive = btn.classList.toggle("active");
+                        countEl.textContent = parseInt(countEl.textContent) + (isActive ? 1 : -1);
+                    });
+                });
+
+                // Click to open project detail
+                card.addEventListener("click", (e) => {
+                    if (e.target.closest("a") || e.target.closest(".signal-btn")) return;
+                    window.location.href = `/showcase/project.html?id=${project.id}`;
+                });
+
+                grid.appendChild(card);
+            });
+        }
+
+        async function loadProjects() {
+            const grid = document.getElementById("projects-grid");
+            try {
+                // Fetch projects with username joined
+                const projects = await window.SupabaseClient.supabaseFetch(
+                    "projects?select=*,profiles(username,avatar_url)&order=created_at.desc"
+                );
+
+                if (!projects || projects.length === 0) {
+                    grid.innerHTML = `<div class="empty-state"><p>No projects yet. <a href="/submit-project/index.html">Be the first!</a></p></div>`;
+                    return;
+                }
+
+                // Fetch signals for all projects in parallel
+                const projectsWithSignals = await Promise.all(projects.map(async project => {
+                    const profile = project.profiles;
+                    project.username = profile?.username || "Unknown";
+
+                    const signals = await window.SupabaseClient.supabaseFetch(
+                        `project_signals?select=signal,user_id&project_id=eq.${project.id}`
+                    ).catch(() => []);
+
+                    const counts = { useful: 0, inspiring: 0, well_built: 0 };
+                    const userSignals = new Set();
+
+                    (signals || []).forEach(row => {
+                        if (counts[row.signal] !== undefined) counts[row.signal]++;
+                        if (currentUser && row.user_id === currentUser.id) userSignals.add(row.signal);
+                    });
+
+                    project.signalCounts = counts;
+                    project.userSignals = userSignals;
+                    return project;
+                }));
+
+                allProjects = projectsWithSignals;
+                renderProjects(allProjects);
+
+            } catch (err) {
+                grid.innerHTML = `<div class="empty-state"><p>Failed to load projects: ${err.message}</p></div>`;
+            }
+        }
+
+        loadProjects();
+    </script>
+</body>
+
+</html>

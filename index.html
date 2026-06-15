@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4819817034021416" crossorigin="anonymous"></script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ═══ SEO — Primary ═══ -->
+  <title>Ither — Developer Articles, Tutorials & Open Source Projects</title>
+  <meta name="description" content="DevBlog is a community platform for developers to publish and discover articles, code tutorials, open source projects, and tech news. Join developers learning and sharing real-world knowledge." />
+  <meta name="keywords" content="developer blog, programming tutorials, code examples, open source projects, tech news, software engineering, web development, JavaScript tutorials, Python guides, coding community, developer articles" />
+  <meta name="author" content="DevBlog" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://ither.online/" />
+
+  <!-- ═══ SEO — Open Graph ═══ -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ither.online/" />
+  <meta property="og:title" content="DevBlog — Developer Articles, Tutorials & Open Source Projects" />
+  <meta property="og:description" content="Discover in-depth developer articles, tutorials, and open source projects. A community platform for programmers of all levels." />
+  <meta property="og:image" content="https://ither.online/og-image.png" />
+  <meta property="og:site_name" content="DevBlog" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- ═══ SEO — Twitter Card ═══ -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="DevBlog — Developer Articles, Tutorials & Open Source" />
+  <meta name="twitter:description" content="Discover in-depth developer articles, tutorials, and open source projects." />
+  <meta name="twitter:image" content="https://ither.online/og-image.png" />
+
+  <!-- ═══ SEO — Schema.org JSON-LD ═══ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "DevBlog",
+    "url": "https://ither.online/",
+    "description": "A developer blog platform for articles, tutorials, open source projects, and tech community discussions.",
+    "publisher": { "@type": "Organization", "name": "DevBlog", "url": "https://ither.online/" },
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://ither.online/articles/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+
+  <link rel="stylesheet" href="/assets/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ══════════════════════════════════════════════════════
+       LANDING PAGE — all prefixed with lp- to never clash
+       with style.css globals
+       ══════════════════════════════════════════════════════ */
+
+    /* Both panels hidden until JS decides */
+    #landing    { display: none; }
+    #app-shell  { display: none; }
+
+    /* Landing wrapper — resets body flex from style.css */
+    #landing {
+      font-family: 'Inter', sans-serif;
+      background: #ffffff;
+      color: #0f172a;
+      min-height: 100vh;
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+    }
+
+    /* ── Nav ── */
+    .lp-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .lp-nav__inner {
+      max-width: 1100px; margin: 0 auto; padding: 0 24px;
+      height: 62px; display: flex; align-items: center; gap: 32px;
+    }
+    .lp-logo {
+      font-family: 'JetBrains Mono', monospace; font-weight: 700;
+      font-size: 1.05rem; color: #0f172a; text-decoration: none; flex-shrink: 0;
+    }
+    .lp-logo span { color: #2563eb; }
+    .lp-nav__links { display: flex; align-items: center; gap: 24px; list-style: none; margin-left: auto; }
+    .lp-nav__links a { font-size: 0.9rem; color: #475569; text-decoration: none; font-weight: 500; transition: color 0.15s; }
+    .lp-nav__links a:hover { color: #2563eb; }
+    .lp-btn-nav {
+      background: #2563eb; color: #fff !important; padding: 8px 20px;
+      border-radius: 999px; font-size: 0.88rem !important; font-weight: 600 !important; transition: background 0.15s !important;
+    }
+    .lp-btn-nav:hover { background: #1d4ed8 !important; }
+
+    /* ── Hero ── */
+    .lp-hero {
+      max-width: 1100px; margin: 0 auto; padding: 80px 24px 64px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+    }
+    .lp-hero__badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 999px;
+      padding: 5px 14px 5px 10px; font-size: 0.78rem; font-weight: 600;
+      color: #1d4ed8; margin-bottom: 20px; width: fit-content;
+    }
+    .lp-hero__badge-dot {
+      width: 7px; height: 7px; border-radius: 50%; background: #22c55e;
+      animation: lp-pulse 2s ease infinite;
+    }
+    @keyframes lp-pulse {
+      0%,100% { opacity:1; transform:scale(1); }
+      50% { opacity:0.5; transform:scale(0.8); }
+    }
+    .lp-hero h1 {
+      font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 800; line-height: 1.12;
+      letter-spacing: -0.04em; color: #0f172a; margin-bottom: 18px;
+    }
+    .lp-hero h1 em { font-style: normal; color: #2563eb; }
+    .lp-hero__desc { font-size: 1.05rem; color: #475569; line-height: 1.72; margin-bottom: 32px; max-width: 480px; }
+    .lp-hero__actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+
+    .lp-btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #2563eb; color: #fff; font-size: 0.95rem; font-weight: 600;
+      padding: 13px 28px; border-radius: 999px; text-decoration: none;
+      transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+    }
+    .lp-btn-primary:hover { background: #1d4ed8; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(37,99,235,0.3); }
+
+    .lp-btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent; color: #334155; font-size: 0.95rem; font-weight: 500;
+      padding: 13px 24px; border-radius: 999px; border: 1px solid #cbd5e1; text-decoration: none;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+    }
+    .lp-btn-secondary:hover { border-color: #2563eb; background: #eff6ff; color: #2563eb; }
+
+    /* ── Hero visual (mock cards) ── */
+    .lp-hero__visual { position: relative; display: flex; flex-direction: column; gap: 12px; }
+    .lp-mock-card {
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 14px;
+      padding: 18px 20px; box-shadow: 0 4px 20px rgba(15,23,42,0.07);
+    }
+    .lp-mock-card:nth-child(2) { margin-left: 28px; }
+    .lp-mock-card:nth-child(3) { margin-left: 14px; }
+    .lp-mock-tag {
+      display: inline-block; font-size: 0.7rem; font-weight: 700;
+      font-family: 'JetBrains Mono', monospace; padding: 3px 10px; border-radius: 999px;
+      background: #eff6ff; color: #2563eb; margin-bottom: 8px;
+    }
+    .lp-mock-tag.green { background:#f0fdf4; color:#16a34a; }
+    .lp-mock-tag.amber { background:#fffbeb; color:#d97706; }
+    .lp-mock-title { font-size: 0.88rem; font-weight: 600; color: #0f172a; line-height: 1.4; margin-bottom: 6px; }
+    .lp-mock-meta { font-size: 0.75rem; color: #94a3b8; }
+
+    /* ── Stats ── */
+    .lp-stats { background: #f8fafc; border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; }
+    .lp-stats__inner {
+      max-width: 1100px; margin: 0 auto; padding: 32px 24px;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; text-align: center;
+    }
+    .lp-stat__num { font-family: 'JetBrains Mono', monospace; font-size: 1.8rem; font-weight: 700; color: #0f172a; }
+    .lp-stat__num span { color: #2563eb; }
+    .lp-stat__label { font-size: 0.78rem; color: #64748b; margin-top: 4px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
+
+    /* ── Section ── */
+    .lp-section { max-width: 1100px; margin: 0 auto; padding: 64px 24px; }
+    .lp-section__eyebrow {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 700;
+      color: #2563eb; text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 8px;
+    }
+    .lp-section__title { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 800; color: #0f172a; letter-spacing: -0.03em; margin-bottom: 12px; line-height: 1.2; }
+    .lp-section__desc { font-size: 1rem; color: #64748b; max-width: 520px; line-height: 1.7; margin-bottom: 36px; }
+
+    /* ── Categories ── */
+    .lp-cats { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; }
+    .lp-cat {
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 20px;
+      text-decoration: none; display: flex; flex-direction: column; gap: 8px;
+      transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+    }
+    .lp-cat:hover { border-color: #2563eb; box-shadow: 0 4px 20px rgba(37,99,235,0.1); transform: translateY(-2px); }
+    .lp-cat__icon { font-size: 1.4rem; }
+    .lp-cat__name { font-size: 0.95rem; font-weight: 700; color: #0f172a; }
+    .lp-cat__sub { font-size: 0.8rem; color: #94a3b8; }
+
+    /* ── Features ── */
+    .lp-features { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+    .lp-feature { background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 22px; }
+    .lp-feature__icon {
+      width: 40px; height: 40px; border-radius: 10px; background: #eff6ff;
+      display: flex; align-items: center; justify-content: center; font-size: 1.1rem; margin-bottom: 14px;
+    }
+    .lp-feature__title { font-size: 0.95rem; font-weight: 700; color: #0f172a; margin-bottom: 6px; }
+    .lp-feature__desc { font-size: 0.85rem; color: #64748b; line-height: 1.65; }
+
+    /* ── Divider ── */
+    .lp-divider { border: none; border-top: 1px solid #e2e8f0; margin: 0; }
+
+    /* ── CTA ── */
+    .lp-cta-wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px 72px; }
+    .lp-cta {
+      background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
+      border: 1px solid #bfdbfe; border-radius: 20px; padding: 56px 40px; text-align: center;
+    }
+    .lp-cta h2 { font-size: clamp(1.5rem, 3.5vw, 2rem); font-weight: 800; color: #0f172a; letter-spacing: -0.03em; margin-bottom: 12px; }
+    .lp-cta p { color: #475569; font-size: 1rem; max-width: 440px; margin: 0 auto 28px; line-height: 1.7; }
+    .lp-cta__actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    /* ── Footer ── */
+    .lp-footer { border-top: 1px solid #e2e8f0; background: #f8fafc; }
+    .lp-footer__inner {
+      max-width: 1100px; margin: 0 auto; padding: 24px;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+    }
+    .lp-footer__copy { font-size: 0.82rem; color: #94a3b8; }
+    .lp-footer__links { display: flex; gap: 20px; list-style: none; }
+    .lp-footer__links a { font-size: 0.82rem; color: #94a3b8; text-decoration: none; transition: color 0.15s; }
+    .lp-footer__links a:hover { color: #2563eb; }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .lp-hero { grid-template-columns: 1fr; padding: 48px 20px 40px; gap: 40px; }
+      .lp-hero__visual { display: none; }
+      .lp-stats__inner { grid-template-columns: repeat(2, 1fr); }
+      .lp-nav__links { display: none; }
+      .lp-cta { padding: 36px 20px; }
+      .lp-section { padding: 48px 20px; }
+    }
+    @media (max-width: 480px) {
+      .lp-stats__inner { gap: 16px; }
+      .lp-hero h1 { font-size: 1.9rem; }
+      .lp-cta-wrap { padding: 0 16px 48px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════
+     LANDING PAGE  — guest only, shown when no session found
+     ═══════════════════════════════════════════════════════════ -->
+<div id="landing">
+
+  <header>
+    <div class="lp-hero">
+      <div>
+        <div class="lp-hero__badge">
+          <div class="lp-hero__badge-dot"></div>
+          Open developer community
+        </div>
+        <h1>Where developers<br><em>share & grow</em></h1>
+        <p class="lp-hero__desc">
+          Discover tutorials, open source projects, and real-world code — written by engineers, for engineers. No noise, just knowledge.
+        </p>
+        <div class="lp-hero__actions">
+          <a href="articles/index.html" class="lp-btn-primary">
+            Browse Articles
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a href="/login/" class="lp-btn-secondary">Create free account</a>
+        </div>
+      </div>
+
+      <div class="lp-hero__visual" aria-hidden="true">
+        <div class="lp-mock-card">
+          <div class="lp-mock-tag">Tutorial</div>
+          <div class="lp-mock-title">Building a REST API with Node.js &amp; Express — complete guide</div>
+          <div class="lp-mock-meta">5 min read · Node.js</div>
+        </div>
+        <div class="lp-mock-card">
+          <div class="lp-mock-tag green">Open Source</div>
+          <div class="lp-mock-title">Top 10 dev tools you should be using in 2025</div>
+          <div class="lp-mock-meta">4 min read · Tools</div>
+        </div>
+        <div class="lp-mock-card">
+          <div class="lp-mock-tag amber">Deep Dive</div>
+          <div class="lp-mock-title">Supabase Row Level Security explained simply</div>
+          <div class="lp-mock-meta">7 min read · Supabase</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="lp-stats" aria-label="Platform statistics">
+    <div class="lp-stats__inner">
+      <div><div class="lp-stat__num">1,200<span>+</span></div><div class="lp-stat__label">Articles published</div></div>
+      <div><div class="lp-stat__num">340<span>+</span></div><div class="lp-stat__label">Active authors</div></div>
+      <div><div class="lp-stat__num">50k<span>+</span></div><div class="lp-stat__label">Monthly readers</div></div>
+      <div><div class="lp-stat__num">8<span>+</span></div><div class="lp-stat__label">Topic categories</div></div>
+    </div>
+  </section>
+
+  <hr class="lp-divider" />
+
+  <section class="lp-section" aria-labelledby="lp-cat-title">
+    <p class="lp-section__eyebrow">Browse by topic</p>
+    <h2 class="lp-section__title" id="lp-cat-title">Explore categories</h2>
+    <p class="lp-section__desc">From system design to frontend tricks — find exactly what you're looking for.</p>
+    <div class="lp-cats">
+      <a href="/code/index.html" class="lp-cat"><div class="lp-cat__icon">⚙️</div><div class="lp-cat__name">Code &amp; Tutorials</div><div class="lp-cat__sub">Hands-on programming guides</div></a>
+      <a href="/news/index.html" class="lp-cat"><div class="lp-cat__icon">📡</div><div class="lp-cat__name">Tech News</div><div class="lp-cat__sub">Latest from the dev world</div></a>
+      <a href="/community/index.html" class="lp-cat"><div class="lp-cat__icon">🤝</div><div class="lp-cat__name">Community</div><div class="lp-cat__sub">Discussion &amp; devnotes</div></a>
+      <a href="/showcase/index.html" class="lp-cat"><div class="lp-cat__icon">🚀</div><div class="lp-cat__name">Showcase</div><div class="lp-cat__sub">Projects built by devs</div></a>
+      <a href="/submit-project/index.html" class="lp-cat"><div class="lp-cat__icon">📦</div><div class="lp-cat__name">Submit Project</div><div class="lp-cat__sub">Share what you've built</div></a>
+    </div>
+  </section>
+
+  <hr class="lp-divider" />
+
+  <section class="lp-section" aria-labelledby="lp-feat-title">
+    <p class="lp-section__eyebrow">Why Ither?</p>
+    <h2 class="lp-section__title" id="lp-feat-title">Built for developers</h2>
+    <p class="lp-section__desc">Everything a developer needs — without the noise.</p>
+    <div class="lp-features">
+      <div class="lp-feature"><div class="lp-feature__icon">✍️</div><div class="lp-feature__title">Markdown-first writing</div><div class="lp-feature__desc">Write in Markdown with syntax-highlighted code blocks. Clean, distraction-free editor.</div></div>
+      <div class="lp-feature"><div class="lp-feature__icon">🔍</div><div class="lp-feature__title">SEO-friendly by default</div><div class="lp-feature__desc">Your articles get proper meta tags, sitemaps, and structured data — more reach, less effort.</div></div>
+      <div class="lp-feature"><div class="lp-feature__icon">🌐</div><div class="lp-feature__title">Open community</div><div class="lp-feature__desc">Publish, comment, and collaborate with developers from all over the world.</div></div>
+      <div class="lp-feature"><div class="lp-feature__icon">⚡</div><div class="lp-feature__title">Fast &amp; lightweight</div><div class="lp-feature__desc">Static-first architecture — your content loads instantly on any device.</div></div>
+    </div>
+  </section>
+
+  <div class="lp-cta-wrap">
+    <div class="lp-cta">
+      <h2>Ready to share what you know?</h2>
+      <p>Join thousands of developers publishing articles, tutorials, and project showcases on DevBlog.</p>
+      <div class="lp-cta__actions">
+        <a href="/login/ither.online" class="lp-btn-primary">Get started — it's free</a>
+        <a href="/articles/ither.online" class="lp-btn-secondary">Browse articles</a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="lp-footer">
+    <div class="lp-footer__inner">
+      <span class="lp-footer__copy">© 2025 Ither · <a href="https://ither.online" style="color:inherit;text-decoration:none;">ither.online</a></span>
+      <ul class="lp-footer__links">
+        <li><a href="/about/ither.online">About</a></li>
+        <li><a href="/contact/ither.online">Contact</a></li>
+        <li><a href="/sitemap.xml">Sitemap</a></li>
+        <li><a href="/robots.txt">Robots.txt</a></li>
+      </ul>
+    </div>
+  </footer>
+
+</div><!-- /#landing -->
+
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     APP SHELL  — logged-in users, exact same as original code
+     ═══════════════════════════════════════════════════════════ -->
+<div id="app-shell">
+  <script src="/lib/header.js"></script>
+
+  <div class="page-wrapper">
+    <div class="page-header">
+      <h1>Featured</h1>
+      <span class="post-count" id="post-count"></span>
+    </div>
+    <div class="posts-grid" id="posts-container">
+      <div class="loading-state"><div class="spinner"></div> Loading posts...</div>
+    </div>
+  </div>
+</div><!-- /#app-shell -->
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SCRIPTS + ROUTING
+     supabase.js must load first (defines getSession etc.)
+     ═══════════════════════════════════════════════════════════ -->
+<script src="/lib/supabase.js"></script>
+<script src="/lib/user-menu.js"></script>
+<script src="/lib/posts.js"></script>
+
+<script>
+(async () => {
+  // ── 1. Read session from localStorage (same as supabase.js getSession) ──
+  let session = null;
+  try { session = JSON.parse(localStorage.getItem("sb_session") || "null"); } catch {}
+
+  // ── 2. If we have a refresh_token but access_token is missing/expired,
+  //        try to silently refresh before deciding which view to show ──
+  if (session && !session.access_token && session.refresh_token) {
+    try {
+      const __sbUrl = (window.__ENV__ || {}).SUPABASE_URL || "";
+      const __sbKey = (window.__ENV__ || {}).SUPABASE_ANON_KEY || "";
+      const r = await fetch(
+        `${__sbUrl}/auth/v1/token?grant_type=refresh_token`,
+        {
+          method: "POST",
+          headers: {
+            "apikey": __sbKey,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ refresh_token: session.refresh_token })
+        }
+      );
+      const d = await r.json();
+      if (d.access_token) {
+        session = d;
+        localStorage.setItem("sb_session", JSON.stringify(d));
+      } else {
+        session = null;
+        localStorage.removeItem("sb_session");
+      }
+    } catch { session = null; }
+  }
+
+  // ── 3. Decide which panel to show ──
+  const isLoggedIn = !!(session?.access_token || session?.user);
+
+  if (isLoggedIn) {
+    // Show the original feed exactly as before
+    document.getElementById("app-shell").style.display = "block";
+
+    // Wait for DOM then initialise original scripts
+    const init = () => {
+      if (typeof initializeUserMenu === "function") initializeUserMenu();
+
+      const container = document.getElementById("posts-container");
+      const countEl   = document.getElementById("post-count");
+      if (!container) return;
+
+      window.DevBlogPosts.getPosts({ highlightedOnly: true })
+        .then(posts => {
+          if (countEl) countEl.textContent = posts.length ? `${posts.length} post${posts.length !== 1 ? "s" : ""}` : "";
+          window.DevBlogPosts.renderPosts(container, posts, { emptyText: "No featured posts yet." });
+        })
+        .catch(() => {
+          container.innerHTML = `<p class="empty-state">Could not load posts. Check your connection.</p>`;
+        });
+    };
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", init);
+    } else {
+      init();
+    }
+
+  } else {
+    // Show landing page
+    document.getElementById("landing").style.display = "flex";
+  }
+})();
+</script>
+
+</body>
+</html>

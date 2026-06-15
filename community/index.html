@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4819817034021416"
+
+     crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ither — Community</title>
+    <link rel="stylesheet" href="/assets/style.css">
+</head>
+
+<body>
+    <script src="/lib/header.js"></script>
+
+    <div class="page-wrapper">
+        <div class="community-header">
+            <div class="page-header page-header--compact">
+                <h1>Community</h1>
+                <p class="page-subtitle">Posts from our members</p>
+            </div>
+            <div class="user-bar" id="user-bar">
+                <!-- filled by JS -->
+            </div>
+        </div>
+
+        <div id="posts-container" class="posts-grid">
+            <div class="loading-state">
+                <div class="spinner"></div> Loading...
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .post-stats {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+
+        .post-stat {
+            font-size: 0.85rem;
+            color: #666;
+        }
+    </style>
+
+    <script src="/lib/supabase.js"></script>
+    <script src="/lib/posts.js"></script>
+    <script src="/lib/interactions.js"></script> <!-- ← BU QO'SHILDI -->
+    <script src="/lib/user-menu.js"></script>
+    <script>
+        // Global o'zgaruvchilar
+        const userBar = document.getElementById("user-bar");
+
+        // Xavfsiz escape funksiyasi
+        function escapeHtml(str) {
+            return String(str || "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;");
+        }
+
+        // Sahifa to'liq yuklanganda ishga tushadigan qism
+        document.addEventListener("DOMContentLoaded", async () => {
+            // SupabaseClient mavjudligini tekshirish
+            if (!window.SupabaseClient) {
+                console.error("SupabaseClient topilmadi!");
+                return;
+            }
+
+            // Endi getCurrentUser ni xavfsiz chaqirish mumkin
+            const user = window.SupabaseClient.getCurrentUser();
+
+            // User menu init
+            if (typeof initializeUserMenu === 'function') {
+                initializeUserMenu();
+            }
+
+            // User bar interfeysini yangilash
+            if (user) {
+                userBar.innerHTML = `<a href="/publish/index.html" class="btn">+ New Post</a>`;
+            } else {
+                userBar.innerHTML = `<a href="/login/index.html" class="btn">Sign In to Post</a>`;
+            }
+
+            // Postlarni yuklash
+            loadPosts();
+        });
+
+        async function loadPosts() {
+            const container = document.getElementById("posts-container");
+            try {
+                // SupabaseClient yuklanganini yana bir bor tekshirish
+                if (!window.SupabaseClient || !window.SupabaseClient.supabaseFetch) {
+                    throw new Error("Supabase servisi ulanmagan");
+                }
+
+                const posts = await window.SupabaseClient.supabaseFetch(
+                    "community_posts?order=created_at.desc&select=*,profiles(username,avatar_url)"
+                );
+
+                if (!posts || posts.length === 0) {
+                    container.innerHTML = `<p class="empty-state">No community posts yet. <a href="/login/index.html">Sign in</a> to be the first!</p>`;
+                    return;
+                }
+
+                container.innerHTML = "";
+
+                const postCards = await Promise.all(posts.map(async post => {
+                    const profile = post.profiles;
+                    const preview = post.content ? post.content.split("\n")[0] : "";
+
+                    // Counts
+                    const likesCount = await window.SupabaseClient.getLikesCount(post.id).catch(() => 0);
+                    const comments = await window.SupabaseClient.getComments(post.id).catch(() => []);
+                    const commentsCount = Array.isArray(comments) ? comments.length : 0;
+
+                    const card = document.createElement("article");
+                    card.className = "post-card";
+                    card.style.cursor = "pointer";
+                    card.innerHTML = `
+                    <div class="post-card__heading">
+                        <h3 class="post-card__title">${escapeHtml(post.title)}</h3>
+                        <span class="post-badge">${window.DevBlogPosts?.toLabel(post.type) || post.type}</span>
+                    </div>
+                    <p class="post-preview">${escapeHtml(preview)}...</p>
+                    <div class="post-footer">
+                        <span class="post-meta">${window.DevBlogPosts?.formatDate(post.created_at) || post.created_at}</span>
+                        <span class="post-author">by <a href="/profile/index.html?id=${post.user_id}">${escapeHtml(profile?.username || "Unknown")}</a></span>
+                    </div>
+                    <div class="post-stats">
+                        <span class="post-stat">❤️ ${likesCount}</span>
+                        <span class="post-stat">💬 ${commentsCount}</span>
+                    </div>
+                `;
+
+                    card.addEventListener("click", (e) => {
+                        if (e.target.tagName === "A") return;
+                        if (window.DevBlogPosts && window.DevBlogPosts.openPostModal) {
+                            window.DevBlogPosts.openPostModal(post);
+                        }
+                    });
+                    return card;
+                }));
+
+                postCards.forEach(card => container.appendChild(card));
+
+            } catch (err) {
+                console.error(err);
+                container.innerHTML = `<p class="empty-state">Failed to load posts: ${err.message}</p>`;
+            }
+        }
+    </script>
+
+</body>
+
+</html>

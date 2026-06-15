@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ither — New Post</title>
+    <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+    <script src="/lib/header.js"></script>
+
+    <div class="page-wrapper">
+        <div class="page-header">
+            <h1>New Post</h1>
+            <p class="page-subtitle">Share something with the community</p>
+        </div>
+
+        <div class="panel panel--narrow">
+            <div class="form-row">
+                <label for="post-title">Title</label>
+                <input type="text" id="post-title" placeholder="Post title...">
+            </div>
+            <div class="form-row">
+                <label for="post-type">Type</label>
+                <select id="post-type">
+                    <option value="article">Article</option>
+                    <option value="news">News</option>
+                    <option value="code">Code</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label for="post-content">Content</label>
+                <textarea id="post-content" placeholder="Write your post..."></textarea>
+            </div>
+            <div class="form-actions">
+                <button class="btn" id="publish-btn">Publish Post</button>
+                <a href="/community/index.html" class="btn btn--secondary">Cancel</a>
+            </div>
+            <p class="status" id="publish-status"></p>
+        </div>
+    </div>
+
+    <script src="/lib/supabase.js"></script>
+    <script src="/lib/user-menu.js"></script>
+    <script>
+        const user = window.SupabaseClient.getCurrentUser();
+        if (!user) {
+            window.location.href = "/login/index.html";
+        }
+
+        const params = new URLSearchParams(window.location.search);
+        const editPostId = params.get("id");
+        let isEditMode = false;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            initializeUserMenu();
+            
+            if (editPostId) {
+                isEditMode = true;
+                loadExistingPost();
+            }
+        });
+
+        async function loadExistingPost() {
+            try {
+                const posts = await window.SupabaseClient.supabaseFetch(`community_posts?id=eq.${editPostId}`);
+                const post = posts?.[0];
+                
+                if (post) {
+                    // Pre-fill the form
+                    document.getElementById("post-title").value = post.title;
+                    document.getElementById("post-type").value = post.type;
+                    document.getElementById("post-content").value = post.content;
+                    
+                    // Update UI for edit mode
+                    document.querySelector(".page-header h1").textContent = "Edit Post";
+                    document.querySelector(".page-subtitle").textContent = "Update your post";
+                    document.getElementById("publish-btn").textContent = "Update Post";
+                    document.title = "DevBlog — Edit Post";
+                } else {
+                    alert("Post not found or you don't have permission to edit it.");
+                    window.location.href = "/community/index.html";
+                }
+            } catch (err) {
+                alert("Failed to load post: " + err.message);
+                window.location.href = "/community/index.html";
+            }
+        }
+
+        document.getElementById("publish-btn").addEventListener("click", async () => {
+            const title = document.getElementById("post-title").value.trim();
+            const type = document.getElementById("post-type").value;
+            const content = document.getElementById("post-content").value.trim();
+            const status = document.getElementById("publish-status");
+
+            if (!title) {
+                status.textContent = "Title is required.";
+                status.className = "status status--error";
+                return;
+            }
+            if (!content) {
+                status.textContent = "Content is required.";
+                status.className = "status status--error";
+                return;
+            }
+
+            document.getElementById("publish-btn").disabled = true;
+            status.textContent = isEditMode ? "Updating..." : "Publishing...";
+            status.className = "status";
+
+            try {
+                if (isEditMode) {
+                    // Update existing post
+                    const now = new Date().toISOString();
+                    await window.SupabaseClient.supabaseFetch(`community_posts?id=eq.${editPostId}`, {
+                        method: "PATCH",
+                        body: JSON.stringify({ title, type, content, updated_at: now }),
+                        prefer: "return=minimal"
+                    });
+                    status.textContent = "✓ Updated! Redirecting...";
+                    status.className = "status status--ok";
+                    setTimeout(() => window.location.href = `/profile/index.html?id=${user.id}`, 800);
+                } else {
+                    // Create new post
+                    const defaultUsername = user?.email?.split("@")[0] || "guest";
+                    await window.SupabaseClient.ensureProfile(user, { username: defaultUsername });
+
+                    const now = new Date().toISOString();
+                    await window.SupabaseClient.supabaseFetch("community_posts", {
+                        method: "POST",
+                        body: JSON.stringify({ user_id: user.id, title, type, content, created_at: now, updated_at: now }),
+                        prefer: "return=minimal"
+                    });
+                    status.textContent = "✓ Published! Redirecting...";
+                    status.className = "status status--ok";
+                    setTimeout(() => window.location.href = "/community/index.html", 800);
+                }
+            } catch (err) {
+                status.textContent = (err && err.message) ? err.message : "Unable to " + (isEditMode ? "update" : "publish") + " post.";
+                status.className = "status status--error";
+                document.getElementById("publish-btn").disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

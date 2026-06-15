@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4819817034021416"
+
+     crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ither — Articles</title>
+    <link rel="stylesheet" href="/assets/style.css">
+    
+</head>
+
+<body>
+    <script src="/lib/header.js"></script>
+
+    <div class="page-wrapper">
+        <div class="page-header">
+            <h1>Articles</h1>
+            <span class="post-count" id="post-count"></span>
+        </div>
+        <div class="posts-grid" id="posts-container">
+            <div class="loading-state">
+                <div class="spinner"></div> Loading articles...
+            </div>
+        </div>
+    </div>
+
+    <script src="/lib/supabase.js"></script>
+    <script src="/lib/posts.js"></script>
+    <script src="/lib/user-menu.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            initializeUserMenu();
+
+            const container = document.getElementById("posts-container");
+            const countEl = document.getElementById("post-count");
+            try {
+                const posts = await window.DevBlogPosts.getPosts({ type: "article" });
+                countEl.textContent = posts.length ? `${posts.length} article${posts.length !== 1 ? "s" : ""}` : "";
+                window.DevBlogPosts.renderPosts(container, posts, { emptyText: "No articles yet.", showType: false });
+            } catch (e) {
+                container.innerHTML = `<p class="empty-state">Could not load articles. Check your connection.</p>`;
+            }
+        });
+    </script>
+    
+</body>
+</html>

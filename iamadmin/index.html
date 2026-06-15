@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevBlog — Admin</title>
+    <link rel="stylesheet" href="/assets/admin.css">
+</head>
+<body>
+    <script src="/lib/header.js"></script>
+
+    <!-- LOGIN GATE -->
+    <div class="page-wrapper" id="login-screen">
+        <div class="login-box">
+            <div class="login-box__header">
+                <span class="login-lock">&#9632;</span>
+                <h1>Admin Access</h1>
+                <p>Enter your password to continue</p>
+            </div>
+            <div class="form-row">
+                <label for="email-input">Admin Email</label>
+                <input type="email" id="email-input" autocomplete="email" placeholder="admin@example.com">
+            </div>
+            <div class="form-row">
+                <label for="password-input">Password</label>
+                <input type="password" id="password-input" autocomplete="current-password" placeholder="••••••••">
+            </div>
+            <p id="login-error" class="status status--error" hidden>Incorrect credentials or not an admin.</p>
+            <button class="btn" id="login-btn">Enter</button>
+        </div>
+    </div>
+
+    <!-- ADMIN PANEL -->
+    <div class="page-wrapper" id="admin-screen" hidden>
+        <div class="admin-topbar">
+            <div class="page-header page-header--compact">
+                <h1>Admin Panel</h1>
+            </div>
+            <button class="btn btn--secondary" id="logout-btn">Logout</button>
+        </div>
+
+        <!-- TAB NAV -->
+        <div class="admin-tabs">
+            <button class="admin-tab active" data-tab="dashboard">📊 Dashboard</button>
+            <button class="admin-tab" data-tab="articles">📝 Articles</button>
+            <button class="admin-tab" data-tab="projects">🚀 Projects</button>
+            <button class="admin-tab" data-tab="users">👥 Users</button>
+            <button class="admin-tab" data-tab="community">💬 Community</button>
+            <button class="admin-tab" data-tab="announcement">📢 Announcement</button>
+        </div>
+
+        <!-- DASHBOARD TAB -->
+        <div class="admin-tab-content active" id="tab-dashboard">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-users">—</div>
+                    <div class="stat-label">Total Users</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-posts">—</div>
+                    <div class="stat-label">Articles</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-projects">—</div>
+                    <div class="stat-label">Projects</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-community">—</div>
+                    <div class="stat-label">Community Posts</div>
+                </div>
+            </div>
+            <div class="panel" style="margin-top:24px;">
+                <h2 class="panel-title">Recent Users</h2>
+                <div id="recent-users-list"></div>
+            </div>
+        </div>
+
+        <!-- ARTICLES TAB -->
+        <div class="admin-tab-content" id="tab-articles">
+            <div class="admin-layout">
+                <section class="panel">
+                    <h2 class="panel-title">New Post</h2>
+                    <form id="post-form" novalidate>
+                        <div class="form-row">
+                            <label for="post-title">Title</label>
+                            <input id="post-title" name="title" type="text" placeholder="Post title..." required>
+                        </div>
+                        <div class="form-row">
+                            <label for="post-type">Type</label>
+                            <select id="post-type" name="type" required>
+                                <option value="article">Article</option>
+                                <option value="news">News</option>
+                                <option value="code">Code</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <label for="post-content">Content</label>
+                            <textarea id="post-content" name="content" placeholder="Write your post..." required></textarea>
+                        </div>
+                        <div class="checkbox-row">
+                            <input id="post-highlighted" name="highlighted" type="checkbox">
+                            <label for="post-highlighted">Feature on home page</label>
+                        </div>
+                        <div class="form-actions">
+                            <button id="submit-btn" class="btn" type="submit">Publish Post</button>
+                            <button id="cancel-edit" class="btn btn--secondary" type="button" hidden>Cancel</button>
+                        </div>
+                        <p id="form-status" class="status"></p>
+                    </form>
+                </section>
+                <section class="panel">
+                    <h2 class="panel-title">All Posts <span id="admin-count" class="post-count"></span></h2>
+                    <div id="admin-post-list" class="admin-post-list">
+                        <div class="loading-state"><div class="spinner"></div> Loading...</div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- PROJECTS TAB -->
+        <div class="admin-tab-content" id="tab-projects">
+            <div class="panel">
+                <h2 class="panel-title">All Projects <span id="projects-count" class="post-count"></span></h2>
+                <div id="projects-list" class="admin-grid-list">
+                    <div class="loading-state"><div class="spinner"></div> Loading...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- USERS TAB -->
+        <div class="admin-tab-content" id="tab-users">
+            <div class="panel">
+                <h2 class="panel-title">All Users <span id="users-count" class="post-count"></span></h2>
+                <div id="users-list">
+                    <div class="loading-state"><div class="spinner"></div> Loading...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- COMMUNITY TAB -->
+        <div class="admin-tab-content" id="tab-community">
+            <div class="panel">
+                <h2 class="panel-title">Community Posts <span id="community-count" class="post-count"></span></h2>
+                <div id="community-list" class="admin-grid-list">
+                    <div class="loading-state"><div class="spinner"></div> Loading...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ANNOUNCEMENT TAB -->
+        <div class="admin-tab-content" id="tab-announcement">
+            <div class="panel" style="max-width:600px;">
+                <h2 class="panel-title">📢 Site Announcement</h2>
+                <p style="font-size:0.85rem;color:#666;margin-bottom:16px;">This message will appear as a banner at the top of every page. Leave empty to hide.</p>
+                <div class="form-row">
+                    <label>Announcement Text</label>
+                    <textarea id="announcement-text" rows="3" placeholder="e.g. 🎉 New features launched! Check out the showcase..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button class="btn" id="save-announcement-btn">Save Announcement</button>
+                    <button class="btn btn--secondary" id="clear-announcement-btn">Clear</button>
+                </div>
+                <p class="status" id="announcement-status"></p>
+                <div id="announcement-preview" style="display:none;margin-top:16px;">
+                    <p style="font-size:0.8rem;color:#666;margin-bottom:6px;">Preview:</p>
+                    <div class="announcement-banner-preview"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/lib/supabase.js"></script>
+    <script src="/lib/posts.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>

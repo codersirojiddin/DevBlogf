@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ither — Project</title>
+    <link rel="stylesheet" href="/assets/style.css">
+    <style>
+        .project-detail {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px 60px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #555;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 24px;
+            transition: color 0.15s;
+        }
+
+        .back-btn:hover { color: #2563eb; }
+
+        .project-hero {
+            width: 100%;
+            height: 320px;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #f1f5f9;
+            margin-bottom: 28px;
+        }
+
+        .project-hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .project-hero-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .project-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .project-title-block h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin: 0 0 6px;
+        }
+
+        .project-tagline {
+            color: #555;
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .project-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.15s;
+        }
+
+        .project-link-btn.live {
+            background: #2563eb;
+            color: white;
+        }
+
+        .project-link-btn.live:hover { background: #1d4ed8; }
+
+        .project-link-btn.github {
+            background: #f1f5f9;
+            color: #333;
+            border: 1px solid #e2e8f0;
+        }
+
+        .project-link-btn.github:hover { background: #e2e8f0; }
+
+        .project-link-btn.bookmark {
+            background: #f1f5f9;
+            color: #333;
+            border: 1px solid #e2e8f0;
+        }
+
+        .project-link-btn.bookmark:hover { background: #e2e8f0; }
+
+        .project-info-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .project-status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .project-status-badge.completed,
+        .project-status-badge.launched { background: #d1fae5; color: #065f46; }
+        .project-status-badge.in-progress { background: #fef3c7; color: #92400e; }
+        .project-status-badge.idea { background: #ede9fe; color: #4c1d95; }
+        .project-status-badge.mvp { background: #ede9f6; color: #5b21b6; }
+
+        .project-author-link {
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .project-author-link:hover { text-decoration: underline; }
+
+        .project-date {
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 28px;
+        }
+
+        .tech-badge {
+            background: #f1f5f9;
+            color: #334155;
+            font-size: 0.8rem;
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .project-description {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #333;
+            margin-bottom: 32px;
+            white-space: pre-wrap;
+        }
+
+        .signal-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            margin-bottom: 32px;
+        }
+
+        .signal-section h3 {
+            font-size: 0.9rem;
+            color: #888;
+            font-weight: 600;
+            margin: 0 0 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .signal-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .signal-btn-large {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 14px 24px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.15s;
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .signal-btn-large span {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .signal-btn-large .count {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .signal-btn-large:hover { border-color: #94a3b8; background: #f8fafc; }
+        .signal-btn-large.active { border-color: #2563eb; background: #eff6ff; }
+        .signal-btn-large.active span { color: #2563eb; }
+
+        .owner-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+
+        .btn-danger {
+            background: #fee2e2;
+            color: #dc2626;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background 0.15s;
+        }
+
+        .btn-danger:hover { background: #fecaca; }
+
+        .project-team-section {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .project-team-section h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #111;
+        }
+
+        .roles-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .role-item {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            background: #f9fafb;
+        }
+
+        .role-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .role-header h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #111;
+        }
+
+        .role-status {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .role-description {
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .role-details {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .role-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .skill-badge {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+        }
+
+        .apply-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .applied-status {
+            color: #059669;
+            font-weight: 500;
+        }
+
+        .applications-list {
+            margin-top: 12px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 12px;
+        }
+
+        .application-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .application-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-small {
+            padding: 4px 8px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .accept-btn {
+            background: #059669;
+            color: white;
+        }
+
+        .reject-btn {
+            background: #dc2626;
+            color: white;
+        }
+
+        .status-accepted {
+            color: #059669;
+            font-weight: 500;
+        }
+
+        .status-rejected {
+            color: #dc2626;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            color: #d97706;
+            font-weight: 500;
+        }
+
+        .team-members {
+            margin-top: 24px;
+        }
+
+        .team-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .team-member {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: #f9fafb;
+            border-radius: 6px;
+        }
+
+        .member-role {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .comments-section {
+            margin-top: 40px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 24px;
+        }
+
+        .comments-section h3 {
+            font-size: 1.1rem;
+            margin: 0 0 20px;
+            color: #333;
+        }
+
+        .comment-form {
+            margin-bottom: 24px;
+        }
+
+        .comment-form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            resize: vertical;
+            font-family: inherit;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .comment {
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px;
+            background: #fafafa;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .comment-author {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .comment-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #2563eb;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .comment-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .comment-date {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .comment-delete {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.8rem;
+            opacity: 0.6;
+            transition: opacity 0.15s;
+        }
+
+        .comment-delete:hover { opacity: 1; }
+
+        .comment-body {
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .no-comments {
+            color: #666;
+            font-style: italic;
+            text-align: center;
+            padding: 40px;
+        }
+    </style>
+</head>
+<body>
+    <script src="/lib/header.js"></script>
+
+    <div class="project-detail" id="project-detail">
+        <div class="loading-state" style="text-align:center;padding:60px">
+            <div class="spinner"></div> Loading project...
+        </div>
+    </div>
+
+    <script src="/lib/supabase.js"></script>
+    <script src="/lib/user-menu.js"></script>
+    <script src="/lib/project.js"></script>
+    <script>
+        function formatDate(dateString) {
+            if (!dateString) return "";
+            return new Date(dateString).toLocaleDateString();
+        }
+
+        const params = new URLSearchParams(window.location.search);
+        const projectId = params.get("id");
+        const currentUser = window.SupabaseClient.getCurrentUser();
+
+        if (!projectId) window.location.href = "/showcase/index.html";
+
+        document.addEventListener("DOMContentLoaded", () => {
+            initializeUserMenu();
+        });
+
+        function escapeHtml(str) {
+            return String(str || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+        }
+
+        function renderTeamSection(roles, teamMembers, isOwner, currentUser) {
+            if (!roles || roles.length === 0) return '';
+
+            const rolesHtml = roles.map(role => {
+                const applications = role.project_applications || [];
+                const acceptedCount = applications.filter(app => app.status === 'accepted').length;
+                const hasApplied = applications.some(app => app.user_id === currentUser?.id);
+                const maxPositions = Number.isFinite(role.max_positions) ? role.max_positions : 1;
+
+                let applyButton = '';
+                if (currentUser && !isOwner && !hasApplied && acceptedCount < maxPositions) {
+                    applyButton = `<button class="apply-btn" data-role-id="${role.id}">Apply for this role</button>`;
+                } else if (!isOwner && hasApplied) {
+                    applyButton = `<span class="applied-status">✓ Applied</span>`;
+                }
+
+                const applicationsHtml = isOwner ? applications.map(app => `
+                    <div class="application-item">
+                        <span>${escapeHtml(app.profiles?.username || 'Unknown')}</span>
+                        <div class="application-actions">
+                            ${app.status === 'pending' ? `
+                                <button class="btn-small accept-btn" data-app-id="${app.id}">Accept</button>
+                                <button class="btn-small reject-btn" data-app-id="${app.id}">Reject</button>
+                            ` : `<span class="status-${app.status}">${app.status}</span>`}
+                        </div>
+                    </div>
+                `).join('') : '';
+
+                return `
+                    <div class="role-item">
+                        <div class="role-header">
+                            <h4>${escapeHtml(role.title)}</h4>
+                            <span class="role-status">${acceptedCount}/${maxPositions} filled</span>
+                        </div>
+                        <p class="role-description">${escapeHtml(role.description || '')}</p>
+                        <div class="role-details">
+                            <span>Level: ${escapeHtml(role.level)}</span>
+                            <span>Commitment: ${escapeHtml(role.commitment)}</span>
+                            <span>Compensation: ${escapeHtml(role.compensation)}</span>
+                        </div>
+                        <div class="role-skills">
+                            ${(role.skills || []).map(skill => `<span class="skill-badge">${escapeHtml(skill)}</span>`).join('')}
+                        </div>
+                        ${applyButton}
+                        ${applicationsHtml ? `<div class="applications-list">${applicationsHtml}</div>` : ''}
+                    </div>
+                `;
+            }).join('');
+
+            const teamHtml = teamMembers && teamMembers.length > 0 ? `
+                <div class="team-members">
+                    <h3>Team Members</h3>
+                    <div class="team-list">
+                        ${teamMembers.map(member => `
+                            <div class="team-member">
+                                <a href="/profile/index.html?id=${member.user_id}">${escapeHtml(member.profiles?.username || 'Unknown')}</a>
+                                <span class="member-role">${escapeHtml(member.project_roles?.title || '')}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            ` : '';
+
+            return `
+                <h3>Team Roles</h3>
+                <div class="roles-list">${rolesHtml}</div>
+                ${teamHtml}
+            `;
+        }
+
+        function formatStatus(status) {
+            const map = {
+                idea: 'Idea',
+                'in-progress': 'In Progress',
+                mvp: 'MVP',
+                launched: 'Launched',
+                completed: 'Launched'
+            };
+            return map[status] || status;
+        }
+
+        async function loadProject() {
+            const container = document.getElementById("project-detail");
+            try {
+                const data = await window.SupabaseClient.supabaseFetch(
+                    `projects?id=eq.${projectId}&select=*,profiles(username,avatar_url)`
+                );
+                const project = data?.[0];
+                if (!project) {
+                    container.innerHTML = `<p>Project not found. <a href="/showcase/index.html">Go back</a></p>`;
+                    return;
+                }
+
+                window.DevBlogProjects.logView(projectId);
+
+                const signals = await window.SupabaseClient.supabaseFetch(
+                    `project_signals?select=signal,user_id&project_id=eq.${projectId}`
+                ).catch(() => []);
+
+                const counts = { useful: 0, inspiring: 0, well_built: 0 };
+                const userSignals = new Set();
+                (signals || []).forEach(row => {
+                    if (counts[row.signal] !== undefined) counts[row.signal]++;
+                    if (currentUser && row.user_id === currentUser.id) userSignals.add(row.signal);
+                });
+
+                const roles = await window.SupabaseClient.supabaseFetch(
+                    `project_roles?project_id=eq.${projectId}&select=*,project_applications(id,user_id,profiles(username),status)`
+                ).catch(err => {
+                    console.warn("Could not load project roles:", err);
+                    return [];
+                });
+
+                const teamMembers = await window.SupabaseClient.supabaseFetch(
+                    `project_team_members?project_id=eq.${projectId}&select=*,profiles(username),project_roles(title)`
+                ).catch(err => {
+                    console.warn("Could not load team members:", err);
+                    return [];
+                });
+
+                const profile = project.profiles;
+                const isOwner = currentUser?.id === project.user_id;
+
+                const thumbnail = project.thumbnail_url
+                    ? `<img src="${escapeHtml(project.thumbnail_url)}" alt="${escapeHtml(project.title)}">`
+                    : `<div class="project-hero-placeholder">🚀</div>`;
+
+                const techBadges = (project.tech_stack || [])
+                    .map(t => `<span class="tech-badge">${escapeHtml(t)}</span>`).join("");
+
+                document.title = `DevBlog — ${project.title}`;
+
+                const teamSection = renderTeamSection(roles, teamMembers, isOwner, currentUser);
+                const teamSectionHtml = teamSection ? `<div class="project-team-section">${teamSection}</div>` : '';
+
+                container.innerHTML = `
+                    <a href="/showcase/index.html" class="back-btn">← Back to Showcase</a>
+
+                    <div class="project-hero">${thumbnail}</div>
+
+                    <div class="project-meta">
+                        <div class="project-title-block">
+                            <h1>${escapeHtml(project.title)}</h1>
+                            <p class="project-tagline">${escapeHtml(project.tagline)}</p>
+                        </div>
+                        <div class="project-links">
+                            ${project.live_url ? `<a href="${escapeHtml(project.live_url)}" target="_blank" class="project-link-btn live">🌐 Live Demo</a>` : ""}
+                            ${project.github_url ? `<a href="${escapeHtml(project.github_url)}" target="_blank" class="project-link-btn github">💻 GitHub</a>` : ""}
+                            ${currentUser ? `<button class="project-link-btn bookmark" id="bookmark-btn" data-bookmarked="false">🔖 Bookmark</button>` : ""}
+                        </div>
+                    </div>
+
+                    <div class="project-info-row">
+                        <span class="project-status-badge ${project.status || 'completed'}">${formatStatus(project.status || 'completed')}</span>
+                        <a href="/profile/index.html?id=${project.user_id}" class="project-author-link">by ${escapeHtml(profile?.username || "Unknown")}</a>
+                        <span class="project-date">${formatDate(project.created_at)}</span>
+                    </div>
+
+                    ${techBadges ? `<div class="tech-stack">${techBadges}</div>` : ""}
+                    ${project.description ? `<p class="project-description">${escapeHtml(project.description)}</p>` : ""}
+
+                    ${teamSectionHtml}
+
+                    ${isOwner ? `
+                        <div class="owner-actions">
+                            <button class="btn btn--secondary" onclick="window.location.href='/submit-project/index.html?id=${project.id}'">✏️ Edit</button>
+                            <button class="btn-danger" id="delete-btn">🗑️ Delete Project</button>
+                        </div>
+                    ` : ""}
+
+                    <div class="signal-section">
+                        <h3>Rate this project</h3>
+                        <div class="signal-buttons">
+                            <button class="signal-btn-large ${userSignals.has('useful') ? 'active' : ''}" data-signal="useful">
+                                💡
+                                <span>Useful</span>
+                                <span class="count" id="count-useful">${counts.useful}</span>
+                            </button>
+                            <button class="signal-btn-large ${userSignals.has('inspiring') ? 'active' : ''}" data-signal="inspiring">
+                                🔥
+                                <span>Inspiring</span>
+                                <span class="count" id="count-inspiring">${counts.inspiring}</span>
+                            </button>
+                            <button class="signal-btn-large ${userSignals.has('well_built') ? 'active' : ''}" data-signal="well_built">
+                                ⚙️
+                                <span>Well Built</span>
+                                <span class="count" id="count-well_built">${counts.well_built}</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="comments-section">
+                        <h3>Comments</h3>
+                        ${currentUser ? `
+                            <div class="comment-form">
+                                <textarea id="comment-input" placeholder="Share your thoughts..." rows="3"></textarea>
+                                <button class="btn" id="submit-comment">Post Comment</button>
+                            </div>
+                        ` : `
+                            <p><a href="/login/index.html">Log in</a> to join the discussion.</p>
+                        `}
+                        <div id="comments-list" class="comments-list">
+                            <div class="loading-state"><div class="spinner"></div> Loading comments...</div>
+                        </div>
+                    </div>
+                `;
+
+                // Event delegation for apply/accept/reject
+                container.addEventListener('click', async (e) => {
+                    if (e.target.classList.contains('apply-btn')) {
+                        await applyForRole(e.target.dataset.roleId);
+                    }
+                    if (e.target.classList.contains('accept-btn')) {
+                        await updateApplication(e.target.dataset.appId, 'accepted');
+                    }
+                    if (e.target.classList.contains('reject-btn')) {
+                        await updateApplication(e.target.dataset.appId, 'rejected');
+                    }
+                });
+
+                // Signal buttons
+                container.querySelectorAll(".signal-btn-large").forEach(btn => {
+                    btn.addEventListener("click", async () => {
+                        if (!currentUser) { alert("Please log in to rate projects."); return; }
+                        const signal = btn.dataset.signal;
+                        await window.DevBlogProjects.toggleSignal(projectId, signal);
+                        const countEl = btn.querySelector(".count");
+                        const isActive = btn.classList.toggle("active");
+                        countEl.textContent = parseInt(countEl.textContent) + (isActive ? 1 : -1);
+                    });
+                });
+
+                // Delete button
+                if (isOwner) {
+                    document.getElementById("delete-btn")?.addEventListener("click", async () => {
+                        if (!confirm("Delete this project? This cannot be undone.")) return;
+                        try {
+                            await window.SupabaseClient.supabaseFetch(`projects?id=eq.${projectId}`, {
+                                method: "DELETE",
+                                prefer: "return=minimal"
+                            });
+                            window.location.href = "/showcase/index.html";
+                        } catch (err) {
+                            alert("Failed to delete: " + err.message);
+                        }
+                    });
+                }
+
+                // Bookmark button
+                if (currentUser) {
+                    const bookmarkBtn = document.getElementById("bookmark-btn");
+                    if (bookmarkBtn) {
+                        try {
+                            const isBookmarked = await window.SupabaseClient.isBookmarked(currentUser.id, projectId);
+                            bookmarkBtn.dataset.bookmarked = isBookmarked ? "true" : "false";
+                            bookmarkBtn.textContent = isBookmarked ? "✓ Bookmarked" : "🔖 Bookmark";
+
+                            bookmarkBtn.addEventListener("click", async () => {
+                                bookmarkBtn.disabled = true;
+                                try {
+                                    const currentlyBookmarked = bookmarkBtn.dataset.bookmarked === "true";
+                                    if (currentlyBookmarked) {
+                                        await window.SupabaseClient.unbookmarkProject(currentUser.id, projectId);
+                                        bookmarkBtn.dataset.bookmarked = "false";
+                                        bookmarkBtn.textContent = "🔖 Bookmark";
+                                    } else {
+                                        await window.SupabaseClient.bookmarkProject(currentUser.id, projectId);
+                                        bookmarkBtn.dataset.bookmarked = "true";
+                                        bookmarkBtn.textContent = "✓ Bookmarked";
+                                    }
+                                } catch (err) {
+                                    console.warn("Bookmark operation failed:", err);
+                                }
+                                bookmarkBtn.disabled = false;
+                            });
+                        } catch (err) {
+                            console.warn("Could not load bookmark status:", err);
+                            bookmarkBtn.style.display = "none";
+                        }
+                    }
+                }
+
+                // Comments
+                async function loadComments() {
+                    const commentsList = document.getElementById("comments-list");
+                    try {
+                        const comments = await window.SupabaseClient.getProjectComments(projectId);
+                        if (!comments || comments.length === 0) {
+                            commentsList.innerHTML = '<p class="no-comments">No comments yet. Be the first to share your thoughts!</p>';
+                            return;
+                        }
+                        commentsList.innerHTML = comments.map(comment => `
+                            <div class="comment">
+                                <div class="comment-header">
+                                    <a href="/profile/index.html?id=${comment.user_id}" class="comment-author">
+                                        <div class="comment-avatar">
+                                            ${comment.profiles?.avatar_url
+                                                ? `<img src="${escapeHtml(comment.profiles.avatar_url)}" alt="${escapeHtml(comment.profiles.username)}">`
+                                                : escapeHtml((comment.profiles?.username || 'U')[0].toUpperCase())
+                                            }
+                                        </div>
+                                        <span>${escapeHtml(comment.profiles?.username || 'Unknown')}</span>
+                                    </a>
+                                    <div style="display:flex;align-items:center;gap:8px;">
+                                        <span class="comment-date">${formatDate(comment.created_at)}</span>
+                                        ${currentUser?.id === comment.user_id ? `<button class="comment-delete" data-comment-id="${comment.id}">🗑️</button>` : ''}
+                                    </div>
+                                </div>
+                                <div class="comment-body">${escapeHtml(comment.body).replace(/\n/g, '<br>')}</div>
+                            </div>
+                        `).join('');
+                    } catch (err) {
+                        commentsList.innerHTML = '<p class="error">Failed to load comments.</p>';
+                    }
+                }
+
+                if (currentUser) {
+                    document.getElementById("submit-comment")?.addEventListener("click", async () => {
+                        const input = document.getElementById("comment-input");
+                        const body = input.value.trim();
+                        if (!body) return;
+                        try {
+                            await window.SupabaseClient.addProjectComment(projectId, currentUser.id, body);
+                            input.value = '';
+                            loadComments();
+                        } catch (err) {
+                            alert("Failed to post comment: " + err.message);
+                        }
+                    });
+
+                    document.addEventListener("click", async (e) => {
+                        if (e.target.classList.contains("comment-delete")) {
+                            const commentId = e.target.dataset.commentId;
+                            if (confirm("Delete this comment?")) {
+                                try {
+                                    await window.SupabaseClient.deleteProjectComment(commentId, currentUser.id);
+                                    loadComments();
+                                } catch (err) {
+                                    alert("Failed to delete comment: " + err.message);
+                                }
+                            }
+                        }
+                    });
+                }
+
+                loadComments();
+
+            } catch (err) {
+                container.innerHTML = `<p>Failed to load project: ${escapeHtml(err.message)}</p>`;
+            }
+        }
+
+        async function applyForRole(roleId) {
+            if (!currentUser) { alert("Please log in to apply."); return; }
+            try {
+                const existing = await window.SupabaseClient.supabaseFetch(
+                    `project_applications?role_id=eq.${roleId}&user_id=eq.${currentUser.id}`
+                );
+                if (existing && existing.length > 0) {
+                    alert("You already applied for this role.");
+                    return;
+                }
+                await window.SupabaseClient.supabaseFetch("project_applications", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        project_id: projectId,
+                        role_id: roleId,
+                        user_id: currentUser.id,
+                        status: 'pending'
+                    }),
+                    prefer: "return=minimal"
+                });
+                alert("Application submitted!");
+                location.reload();
+            } catch (err) {
+                alert("Failed to apply: " + err.message);
+            }
+        }
+
+        async function updateApplication(appId, status) {
+            try {
+                // 1. Update application status
+                await window.SupabaseClient.supabaseFetch(`project_applications?id=eq.${appId}`, {
+                    method: "PATCH",
+                    body: JSON.stringify({ status }),
+                    prefer: "return=minimal"
+                });
+
+                if (status === 'accepted') {
+                    // 2. Fetch the application to get project_id, user_id, role_id
+                    const appData = await window.SupabaseClient.supabaseFetch(
+                        `project_applications?id=eq.${appId}&select=project_id,user_id,role_id`
+                    );
+                    const app = appData?.[0];
+                    if (!app) throw new Error("Could not find application data.");
+
+                    // 3. Add to team members
+                    await window.SupabaseClient.supabaseFetch("project_team_members", {
+                        method: "POST",
+                        body: JSON.stringify({
+                            project_id: app.project_id,
+                            user_id: app.user_id,
+                            role_id: app.role_id
+                        }),
+                        prefer: "return=minimal"
+                    });
+
+                    // 4. Get current filled_positions from project_roles
+                    const roleData = await window.SupabaseClient.supabaseFetch(
+                        `project_roles?id=eq.${app.role_id}&select=filled_positions`
+                    );
+                    const currentFilled = roleData?.[0]?.filled_positions || 0;
+
+                    // 5. Increment filled_positions
+                    await window.SupabaseClient.supabaseFetch(`project_roles?id=eq.${app.role_id}`, {
+                        method: "PATCH",
+                        body: JSON.stringify({ filled_positions: currentFilled + 1 }),
+                        prefer: "return=minimal"
+                    });
+                }
+
+                location.reload();
+            } catch (err) {
+                alert("Failed to update: " + err.message);
+            }
+        }
+
+        loadProject();
+    </script>
+</body>
+</html>
